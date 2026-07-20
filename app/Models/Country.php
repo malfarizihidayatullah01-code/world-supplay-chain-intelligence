@@ -2,26 +2,23 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Country extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
-        'country_name',
         'iso2_code',
-        'iso3_code',
-        'capital_city',
+        'name',
+        'capital',
         'region',
-        'sub_region',
         'currency_code',
-        'currency_name',
         'latitude',
         'longitude',
-        'flag_url',
-        'status',
+    ];
+
+    protected $casts = [
+        'latitude' => 'decimal:8',
+        'longitude' => 'decimal:8',
     ];
 
     public function ports()
@@ -29,18 +26,48 @@ class Country extends Model
         return $this->hasMany(Port::class);
     }
 
-    public function weatherData()
+    public function riskScores()
     {
-        return $this->hasMany(WeatherData::class);
+        return $this->hasMany(RiskScore::class);
     }
 
-    public function exchangeRates()
+    public function riskScoreHistories()
     {
-        return $this->hasMany(ExchangeRate::class);
+        return $this->hasMany(RiskScoreHistory::class);
     }
 
-    public function newsArticles()
+    public function weatherCaches()
     {
-        return $this->hasMany(NewsArticle::class);
+        return $this->hasMany(WeatherCache::class);
+    }
+
+    public function newsCaches()
+    {
+        return $this->hasMany(NewsCache::class);
+    }
+
+    public function watchlists()
+    {
+        return $this->hasMany(Watchlist::class);
+    }
+
+    public function economicIndicator()
+    {
+        return $this->hasOne(EconomicIndicator::class);
+    }
+
+    public function getGdpAttribute($value)
+    {
+        return $this->economicIndicator->gdp ?? $value;
+    }
+
+    public function getInflationRateAttribute($value)
+    {
+        return $this->economicIndicator->inflation_rate ?? $value;
+    }
+
+    public function getPopulationAttribute($value)
+    {
+        return $this->economicIndicator->population ?? $value;
     }
 }

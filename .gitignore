@@ -22,19 +22,36 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
+# Antigravity generated scripts
+populate_*.php
+# Manual testing scripts
+test_*.php
+run_*.php
 
-apply_fixes_utf8.py
-apply_fixes.py
-bind_repo.py
-extract_tables.py
-extract.py
-extract3.py
-get_schema.py
-remove_all_boms.py
-remove_bom.py
-SPRINT_1_PROJECT_SETUP.md
-SPRINT_2_MASTER_DATA.md
-SPRINT_3_API_INTEGRATION.md
-SPRINT_4_RISK_ANALYSIS_ENGINE.md
-SPRINT_5_SHIPMENT_ANALYSIS_ENGINE.md
-SPRINT_6_TESTING_AND_QUALITY_ASSURANCE.md
+# Debug scripts
+alter_enum.php
+check_counts.php
+describe_risk_scores.php
+get_tables_schema.php
+get_top_bottom.php
+
+# API response files
+api_response*.txt
+
+# Backup / temporary files
+*.bak
+*.tmp
+
+add_translations.php
+seed_currency.php
+
+# Additional scripts to ignore
+capitals.csv
+check_ports.php
+compiled_tail.txt
+download_capitals*.php
+fix_tanjung.php
+reduce_ports*.php
+seed_articles.php
+sync.php
+update_capitals*.php

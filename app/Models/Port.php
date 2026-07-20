@@ -2,21 +2,21 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Port extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
         'country_id',
-        'port_code',
-        'port_name',
-        'city',
+        'name',
+        'unlocode',
         'latitude',
         'longitude',
-        'status',
+    ];
+
+    protected $casts = [
+        'latitude' => 'decimal:8',
+        'longitude' => 'decimal:8',
     ];
 
     public function country()
@@ -24,13 +24,20 @@ class Port extends Model
         return $this->belongsTo(Country::class);
     }
 
-    public function originRoutes()
+    public function shipmentsAsOrigin()
     {
-        return $this->hasMany(ShippingRoute::class, 'origin_port_id');
+        return $this->hasMany(Shipment::class, 'origin_port_id');
     }
 
-    public function destinationRoutes()
+    public function shipmentsAsDestination()
     {
-        return $this->hasMany(ShippingRoute::class, 'destination_port_id');
+        return $this->hasMany(Shipment::class, 'destination_port_id');
+    }
+
+
+
+    public function weatherCaches()
+    {
+        return $this->hasMany(WeatherCache::class);
     }
 }

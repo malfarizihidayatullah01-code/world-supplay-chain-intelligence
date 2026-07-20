@@ -35,24 +35,4 @@ return [
         ],
     ],
 
-    'rest_countries' => [
-        'base_url' => env('REST_COUNTRIES_URL', 'https://api.restcountries.com/countries/v5'),
-        'key' => env('REST_COUNTRIES_API_KEY'),
-    ],
-
-    'weather' => [
-        'base_url' => env('WEATHER_API_URL'),
-        'key' => env('WEATHER_API_KEY'),
-    ],
-
-    'exchange_rate' => [
-        'base_url' => env('EXCHANGE_RATE_API_URL'),
-        'key' => env('EXCHANGE_RATE_API_KEY'),
-    ],
-
-    'news' => [
-        'base_url' => env('NEWS_API_URL'),
-        'key' => env('NEWS_API_KEY'),
-    ],
-
 ];
