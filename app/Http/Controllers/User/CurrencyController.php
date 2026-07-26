@@ -92,6 +92,10 @@ class CurrencyController extends Controller
                 $lastWeekConverted = $historicalData[count($historicalData) - 7];
                 $weeklyChange = (($latestConverted - $lastWeekConverted) / $lastWeekConverted) * 100;
             }
+
+            // Limit chart to last 7 days
+            $historicalLabels = array_slice($historicalLabels, -7);
+            $historicalData = array_slice($historicalData, -7);
         }
 
         $insight = $this->currencyInsightService->generateInsight($selectedCurrency, $dailyChange);

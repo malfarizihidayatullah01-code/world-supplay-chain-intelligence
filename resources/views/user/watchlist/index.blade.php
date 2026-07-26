@@ -336,7 +336,7 @@
 
 @section('content')
 <div class="fav-page">
-<div class="container-fluid px-4">
+<div class="container-fluid px-0">
 
     {{-- ── Header ── --}}
     <div class="fav-header">

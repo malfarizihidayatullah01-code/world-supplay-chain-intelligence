@@ -4,26 +4,10 @@
 <!-- Flag Icons -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.0.0/css/flag-icons.min.css"/>
 <style>
-    /* Base Variables & Theme */
-    :root {
-        --c-bg: #F8FAFC;
-        --c-card: #ffffff;
-        --c-border: #e2e8f0;
-        --c-text: #0f172a;
-        --c-text-muted: #64748b;
-        --c-primary: #0ea5e9;
-        --c-primary-soft: #e0f2fe;
-        --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.03);
-        --shadow-hover: 0 10px 25px rgba(0, 0, 0, 0.06);
-        --radius-card: 20px;
-    }
-
     /* Page Container */
     .currency-monitoring-page {
-        background-color: var(--c-bg);
+        background-color: transparent;
         min-height: calc(100vh - 80px);
-        font-family: 'Inter', sans-serif;
-        color: var(--c-text);
         animation: fadeIn 0.4s ease-out;
     }
 
@@ -34,15 +18,15 @@
 
     /* Modern Card */
     .modern-card {
-        background-color: var(--c-card);
-        border: 1px solid var(--c-border);
+        background-color: var(--surface-color);
+        border: 1px solid var(--border-color);
         border-radius: var(--radius-card);
-        box-shadow: var(--shadow-soft);
-        transition: all 0.3s ease;
+        box-shadow: var(--shadow-global);
+        transition: all var(--transition-speed) ease;
     }
     
     .modern-card:hover {
-        box-shadow: var(--shadow-hover);
+        transform: translateY(-2px);
     }
 
     /* Chart Container (Massive) */
@@ -81,27 +65,27 @@
         flex: 1;
         min-width: 140px;
         padding: 12px 16px;
-        background: var(--c-bg);
-        border: 1px solid var(--c-border);
-        border-radius: 14px;
+        background: var(--surface-color);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-card);
         display: flex;
         align-items: center;
         gap: 12px;
         cursor: pointer;
-        transition: all 0.2s;
+        transition: all var(--transition-speed);
     }
     .converter-box:hover {
-        border-color: #cbd5e1;
-        background: #f1f5f9;
+        border-color: var(--primary);
+        background: rgba(37, 99, 235, 0.05);
     }
     
     .converter-result {
         flex: 2;
         min-width: 200px;
         padding: 12px 20px;
-        background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-        border-radius: 14px;
-        border: 1px solid #bae6fd;
+        background: linear-gradient(135deg, rgba(37, 99, 235, 0.1) 0%, rgba(37, 99, 235, 0.05) 100%);
+        border-radius: var(--radius-card);
+        border: 1px solid rgba(37, 99, 235, 0.2);
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -111,19 +95,19 @@
         width: 40px;
         height: 40px;
         border-radius: 50%;
-        background: var(--c-card);
-        border: 1px solid var(--c-border);
+        background: var(--surface-color);
+        border: 1px solid var(--border-color);
         display: flex;
         align-items: center;
         justify-content: center;
-        color: var(--c-text-muted);
-        box-shadow: 0 2px 5px rgba(0,0,0,0.02);
-        transition: all 0.2s;
+        color: var(--text-secondary);
+        box-shadow: var(--shadow-global);
+        transition: all var(--transition-speed);
         flex-shrink: 0;
     }
     .swap-btn:hover {
-        background: var(--c-primary-soft);
-        color: var(--c-primary);
+        background: rgba(37, 99, 235, 0.1);
+        color: var(--primary);
         transform: rotate(180deg);
     }
 
@@ -160,7 +144,7 @@
         position: absolute;
         left: 0;
         top: 2px;
-        color: var(--c-primary);
+        color: var(--primary);
         font-size: 0.9rem;
     }
 
@@ -175,11 +159,11 @@
         padding: 10px 15px;
         border-bottom: 1px solid #f1f5f9;
         text-decoration: none;
-        color: var(--c-text);
-        transition: background 0.2s;
+        color: var(--text-primary);
+        transition: background var(--transition-speed);
     }
     .currency-item:hover {
-        background: #f8fafc;
+        background: rgba(37, 99, 235, 0.05);
     }
 </style>
 @endpush
@@ -301,6 +285,33 @@
                         </div>
                     </div>
                 @endif
+            </div>
+        </div>
+    </div>
+
+    <!-- HISTORICAL CHART -->
+    <div class="row mt-4 fade-in-up">
+        <div class="col-12">
+            <div class="modern-card p-4">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h5 class="fw-bold text-dark mb-0">
+                        <i class="bi bi-graph-up-arrow me-2 text-primary"></i> {{ __('Tren Nilai Tukar Historis (7 Hari Terakhir)') }}
+                    </h5>
+                    <div class="text-muted small">
+                        {{ $sCode }} ke {{ $bCode }}
+                    </div>
+                </div>
+                <div class="chart-wrapper">
+                    @if(count($historicalData) > 1)
+                        <canvas id="trendChart"></canvas>
+                    @else
+                        <div class="empty-chart-state">
+                            <i class="bi bi-graph-down text-muted mb-2" style="font-size: 2rem;"></i>
+                            <h6 class="text-dark fw-bold">{{ __('Data Belum Cukup') }}</h6>
+                            <p class="text-muted small mb-0">{{ __('Dibutuhkan minimal 2 hari data untuk menampilkan tren.') }}</p>
+                        </div>
+                    @endif
+                </div>
             </div>
         </div>
     </div>

@@ -9,76 +9,81 @@
     /* ============================================
        EXECUTIVE MONITORING WORKSPACE - PREMIUM CSS
     ============================================ */
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-
-    :root {
-        --primary-blue: #2563EB;
-        --primary-indigo: #4F46E5;
-        --risk-emerald: #10B981;
-        --risk-amber: #F59E0B;
-        --risk-red: #EF4444;
-        --surface: #F1F5F9;
-        --surface-2: #F8FAFC;
-        --border: rgba(226, 232, 240, 0.8);
-    }
-
-    body {
-        background-color: var(--surface-2) !important;
-        font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    }
-
     /* ── Layout ── */
     .main-panel { width: 100%; }
 
     /* ── Buttons ── */
     .btn-custom-navy {
-        background: linear-gradient(135deg, #2563EB, #4F46E5);
+        background: var(--primary);
         color: white; border: none;
-        transition: all 0.3s ease;
+        transition: all var(--transition-speed) ease;
+        border-radius: var(--radius-button);
     }
     .btn-custom-navy:hover {
-        background: linear-gradient(135deg, #1D4ED8, #4338CA);
+        background: var(--primary-hover);
         color: white; transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
     }
 
     /* ── Workspace Cards ── */
     .workspace-card {
-        background: #ffffff;
-        border: 1px solid var(--border);
-        border-radius: 20px;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.02);
-        transition: box-shadow 0.3s ease;
+        background: var(--surface-color);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-card);
+        box-shadow: var(--shadow-global);
+        transition: box-shadow var(--transition-speed) ease, transform var(--transition-speed) ease;
         overflow: hidden;
     }
-    .workspace-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+    .workspace-card:hover { transform: translateY(-2px); }
 
     /* ── Hero Header ── */
     .hero-header {
-        background: linear-gradient(135deg, #1E3A8A 0%, #2563EB 50%, #4F46E5 100%);
+        background: linear-gradient(135deg, #2563EB 0%, #3B82F6 100%);
         border-radius: 24px;
-        padding: 32px 36px;
+        padding: 40px;
         position: relative;
         overflow: hidden;
-        box-shadow: 0 8px 32px rgba(37, 99, 235, 0.25);
+        box-shadow: 0 12px 30px rgba(37, 99, 235, 0.25);
     }
     .hero-header::before {
         content: '';
         position: absolute;
-        top: -60px; right: -60px;
-        width: 300px; height: 300px;
-        background: rgba(255,255,255,0.04);
+        top: -100px; right: -50px;
+        width: 400px; height: 400px;
+        background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
         border-radius: 50%;
     }
     .hero-header::after {
         content: '';
         position: absolute;
-        bottom: -80px; left: 40%;
-        width: 400px; height: 200px;
-        background: rgba(255,255,255,0.03);
+        bottom: -150px; left: 10%;
+        width: 500px; height: 500px;
+        background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
         border-radius: 50%;
     }
     .hero-header * { position: relative; z-index: 1; }
+
+    .btn-fav-glass {
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .btn-fav-glass:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+    }
+    .btn-fav-active {
+        background: linear-gradient(135deg, #FDE047 0%, #F59E0B 100%);
+        color: #713F12 !important;
+        border: none;
+        box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .btn-fav-active:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(245, 158, 11, 0.6);
+    }
 
     /* ── Sidebar Country Item ── */
     .country-nav-list {
@@ -96,35 +101,36 @@
         padding: 12px 14px;
         margin-bottom: 6px;
         border-radius: 14px;
-        border: 1px solid #F1F5F9;
+        border: 1px solid transparent;
         border-left: 3px solid transparent;
         text-decoration: none;
         color: inherit;
         transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-        background-color: #ffffff;
+        background-color: var(--surface-color);
     }
-    .country-item[data-risk="Low Risk"],.country-item[data-risk="Low"] { border-left-color: var(--risk-emerald); }
-    .country-item[data-risk="Medium Risk"],.country-item[data-risk="Medium"] { border-left-color: var(--risk-amber); }
-    .country-item[data-risk="High Risk"],.country-item[data-risk="High"] { border-left-color: var(--risk-red); }
+    .country-item[data-risk="Low Risk"],.country-item[data-risk="Low"] { border-left-color: var(--success); }
+    .country-item[data-risk="Medium Risk"],.country-item[data-risk="Medium"] { border-left-color: var(--warning); }
+    .country-item[data-risk="High Risk"],.country-item[data-risk="High"] { border-left-color: var(--danger); }
     .country-item[data-risk="Critical Risk"],.country-item[data-risk="Critical"] { border-left-color: #991B1B; }
-    .country-item:hover { background: #F8FAFC; transform: translateX(3px); box-shadow: 0 2px 8px rgba(0,0,0,0.04); border-color: #E2E8F0; }
-    .country-item.active { background: linear-gradient(90deg, #EFF6FF 0%, #FAFCFF 100%); border-color: #BFDBFE; border-left-color: var(--primary-blue); }
+    .country-item:hover { background: #F8FAFC; transform: translateX(3px); border-color: var(--border-color); }
+    .country-item.active { background: linear-gradient(90deg, #EFF6FF 0%, #FAFCFF 100%); border-color: #BFDBFE; border-left-color: var(--primary); }
 
     /* ── AI Copilot Panel ── */
     .ai-copilot-panel {
-        background: linear-gradient(160deg, #0F172A 0%, #1E3A5F 60%, #1E40AF 100%);
-        border: none;
-        border-radius: 20px;
-        color: white;
+        background: linear-gradient(160deg, #F8FAFC 0%, #EFF6FF 100%);
+        border: 1px solid #E2E8F0;
+        border-radius: var(--radius-card);
+        color: #1E293B;
         overflow: hidden;
         position: relative;
+        box-shadow: 0 4px 15px rgba(37, 99, 235, 0.05);
     }
     .ai-copilot-panel::before {
         content: '';
         position: absolute;
         top: -40px; right: -40px;
         width: 200px; height: 200px;
-        background: rgba(99, 102, 241, 0.15);
+        background: rgba(37, 99, 235, 0.05);
         border-radius: 50%;
         pointer-events: none;
     }
@@ -133,33 +139,33 @@
         position: absolute;
         bottom: 0; left: 0;
         width: 100%; height: 40%;
-        background: linear-gradient(to top, rgba(30, 64, 175, 0.3), transparent);
+        background: linear-gradient(to top, rgba(37, 99, 235, 0.03), transparent);
         pointer-events: none;
     }
     .ai-copilot-panel > * { position: relative; z-index: 1; }
     .ai-block {
-        background: rgba(255,255,255,0.06);
-        border: 1px solid rgba(255,255,255,0.1);
+        background: #FFFFFF;
+        border: 1px solid #E2E8F0;
         border-radius: 12px;
         padding: 14px 16px;
-        backdrop-filter: blur(4px);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.02);
     }
-    .ai-section-divider { border-color: rgba(255,255,255,0.1); margin: 14px 0; }
+    .ai-section-divider { border-color: #E2E8F0; margin: 14px 0; }
 
     /* ── KPI Widgets ── */
     .kpi-widget {
-        border-radius: 16px;
+        border-radius: var(--radius-card);
         padding: 20px;
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
         position: relative;
         overflow: hidden;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        box-shadow: var(--shadow-global);
+        transition: transform var(--transition-speed) ease;
         min-height: 130px;
     }
-    .kpi-widget:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.06); }
+    .kpi-widget:hover { transform: translateY(-2px); }
     .kpi-widget .kpi-icon {
         position: absolute;
         right: 16px;
@@ -168,24 +174,24 @@
         font-size: 48px;
         opacity: 0.12;
     }
-    .kpi-gdp      { background: linear-gradient(135deg, #EFF6FF, #DBEAFE); border-left: 4px solid #3B82F6; }
-    .kpi-pop      { background: linear-gradient(135deg, #F5F3FF, #EDE9FE); border-left: 4px solid #8B5CF6; }
-    .kpi-inf      { background: linear-gradient(135deg, #FFF1F2, #FFE4E6); border-left: 4px solid #EF4444; }
-    .kpi-cur      { background: linear-gradient(135deg, #ECFDF5, #D1FAE5); border-left: 4px solid #10B981; }
-    .kpi-weather  { background: linear-gradient(135deg, #FFFBEB, #FEF3C7); border-left: 4px solid #F59E0B; }
+    .kpi-gdp      { background: rgba(37, 99, 235, 0.05); border-left: 4px solid var(--primary); }
+    .kpi-pop      { background: rgba(139, 92, 246, 0.05); border-left: 4px solid #8B5CF6; }
+    .kpi-inf      { background: rgba(239, 68, 68, 0.05); border-left: 4px solid var(--danger); }
+    .kpi-cur      { background: rgba(16, 185, 129, 0.05); border-left: 4px solid var(--success); }
+    .kpi-weather  { background: rgba(245, 158, 11, 0.05); border-left: 4px solid var(--warning); }
 
     /* ── Risk Gauge ── */
     .risk-gauge-container { position: relative; width: 180px; height: 180px; margin: 0 auto; }
     .risk-gauge {
         width: 100%; height: 100%;
         border-radius: 50%;
-        background: conic-gradient(var(--gauge-color) var(--gauge-deg), #E2E8F0 0deg);
+        background: conic-gradient(var(--gauge-color) var(--gauge-deg), var(--border-color) 0deg);
         display: flex; align-items: center; justify-content: center;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        box-shadow: var(--shadow-global);
     }
     .risk-gauge-inner {
         width: 148px; height: 148px;
-        background: #ffffff;
+        background: var(--surface-color);
         border-radius: 50%;
         display: flex; flex-direction: column;
         align-items: center; justify-content: center;
@@ -196,17 +202,18 @@
     .news-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 20px;
+        gap: var(--card-gap);
     }
     .news-card {
-        border-radius: 18px;
+        border-radius: var(--radius-card);
         overflow: hidden;
-        border: 1px solid #F1F5F9;
-        background: white;
-        transition: transform 0.25s ease, box-shadow 0.25s ease;
+        border: 1px solid var(--border-color);
+        background: var(--surface-color);
+        box-shadow: var(--shadow-global);
+        transition: transform var(--transition-speed) ease;
         display: flex; flex-direction: column;
     }
-    .news-card:hover { transform: translateY(-5px); box-shadow: 0 16px 32px rgba(0,0,0,0.08); }
+    .news-card:hover { transform: translateY(-2px); }
     .news-img { height: 160px; width: 100%; object-fit: cover; background: #F1F5F9; }
 
     /* ── Utility ── */
@@ -221,7 +228,7 @@
     .section-title {
         font-size: 1rem;
         font-weight: 700;
-        color: #1E293B;
+        color: var(--text-primary);
         letter-spacing: -0.01em;
     }
     .section-eyebrow {
@@ -229,7 +236,7 @@
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.08em;
-        color: #94A3B8;
+        color: var(--text-secondary);
     }
     .impact-bar {
         height: 5px; border-radius: 99px;
@@ -267,25 +274,25 @@
                                 @endphp
                                 <span class="badge rounded-pill px-3 py-2 fw-bold" style="background: {{ $hdrBadgeBg }}; font-size: 0.8rem; box-shadow: 0 2px 8px rgba(0,0,0,0.2);">{{ __($hdrRiskLevel) }}</span>
                             </div>
-                            <p class="text-slate-300 mb-3" style="font-size: 0.9rem;">{{ $country->official_name ?? $country->name }}</p>
+                            <p class="text-white opacity-75 mb-3" style="font-size: 0.9rem;">{{ $country->official_name ?? $country->name }}</p>
                             <div class="d-flex gap-5 flex-wrap">
                                 <div>
-                                    <span class="section-eyebrow text-slate-400">{{ __('Capital') }}</span>
+                                    <span class="section-eyebrow text-white opacity-75">{{ __('Capital') }}</span>
                                     <p class="fw-semibold text-white mb-0" style="font-size: 0.95rem;">{{ $country->capital ?? 'N/A' }}</p>
                                 </div>
                                 <div>
-                                    <span class="section-eyebrow text-slate-400">{{ __('Region') }}</span>
+                                    <span class="section-eyebrow text-white opacity-75">{{ __('Region') }}</span>
                                     <p class="fw-semibold text-white mb-0" style="font-size: 0.95rem;">{{ __($country->region ?? 'N/A') }}</p>
                                 </div>
                                 <div>
-                                    <span class="section-eyebrow text-slate-400">{{ __('Last Updated') }}</span>
+                                    <span class="section-eyebrow text-white opacity-75">{{ __('Last Updated') }}</span>
                                     <p class="fw-semibold text-white mb-0" style="font-size: 0.95rem;">{{ $country->updated_at ? $country->updated_at->format('M d, Y') : 'N/A' }}</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="d-flex align-items-start gap-3">
-                        <button id="btnFavorite" data-id="{{ $country->id }}" class="btn {{ $isFavorited ? 'btn-warning text-dark' : 'btn-light text-slate-800' }} rounded-pill px-4 py-2 fw-bold d-flex align-items-center gap-2 shadow" style="transition: all 0.3s;">
+                        <button id="btnFavorite" data-id="{{ $country->id }}" class="btn {{ $isFavorited ? 'btn-fav-active' : 'btn-fav-glass' }} rounded-pill px-4 py-2 fw-bold d-flex align-items-center gap-2 shadow-sm" style="transition: all 0.3s;">
                             <i class="bi {{ $isFavorited ? 'bi-star-fill' : 'bi-star' }} fs-5" id="iconFavorite"></i>
                             <span id="textFavorite">{{ $isFavorited ? __('Favorited') : __('Add to Favorites') }}</span>
                         </button>
@@ -324,12 +331,12 @@
                     <div class="ai-copilot-panel p-4 h-100 d-flex flex-column" style="min-height: 440px;">
                         <!-- AI Header -->
                         <div class="d-flex align-items-center gap-3 mb-4">
-                            <div class="d-flex align-items-center justify-content-center rounded-circle" style="width: 40px; height: 40px; background: rgba(99,102,241,0.3); border: 1px solid rgba(99,102,241,0.5);">
-                                <i class="bi bi-stars text-white fs-5"></i>
+                            <div class="d-flex align-items-center justify-content-center rounded-circle" style="width: 40px; height: 40px; background: rgba(37,99,235,0.1); border: 1px solid rgba(37,99,235,0.2);">
+                                <i class="bi bi-stars text-primary fs-5"></i>
                             </div>
                             <div>
-                                <h6 class="fw-bold mb-0 text-white" style="font-size: 0.95rem;">{{ __('AI Executive Brief') }}</h6>
-                                <span class="text-slate-400" style="font-size: 0.7rem;">{{ __('Powered by Supply Chain AI') }}</span>
+                                <h6 class="fw-bold mb-0 text-slate-800" style="font-size: 0.95rem;">{{ __('AI Executive Brief') }}</h6>
+                                <span class="text-slate-500" style="font-size: 0.7rem;">{{ __('Powered by Supply Chain AI') }}</span>
                             </div>
                         </div>
 
@@ -337,22 +344,22 @@
                             <!-- Risk Badge + Confidence -->
                             <div class="ai-block mb-3">
                                 <div class="d-flex justify-content-between align-items-center mb-2">
-                                    <span class="section-eyebrow text-slate-300">{{ __('Overall Risk') }}</span>
-                                    <span class="badge rounded-pill" style="background: rgba(16,185,129,0.2); color: #6EE7B7; font-size: 0.65rem; border: 1px solid rgba(16,185,129,0.3);">{{ __('AI Confidence') }}: 88%</span>
+                                    <span class="section-eyebrow text-slate-500">{{ __('Overall Risk') }}</span>
+                                    <span class="badge rounded-pill" style="background: #ECFDF5; color: #059669; font-size: 0.65rem; border: 1px solid #A7F3D0;">{{ __('AI Confidence') }}: 88%</span>
                                 </div>
-                                <h4 class="fw-bold mb-1 text-{{ str_contains($aiRecommendation['status'], 'Critical') ? 'danger' : (str_contains($aiRecommendation['status'], 'High') ? 'warning' : (str_contains($aiRecommendation['status'], 'Medium') ? 'info' : 'success') ) }}">
+                                <h4 class="fw-bold mb-1 text-{{ str_contains($aiRecommendation['status'], 'Critical') ? 'danger' : (str_contains($aiRecommendation['status'], 'High') ? 'warning' : (str_contains($aiRecommendation['status'], 'Medium') ? 'primary' : 'success') ) }}">
                                     {{ $aiRecommendation['status'] }}
                                 </h4>
-                                <p class="mb-0 text-slate-300" style="font-size: 0.8rem; line-height: 1.5;">{{ __('Current conditions indicate a :status level for supply chain operations in :country.', ['status' => __(strtolower($aiRecommendation['status'])), 'country' => $country->name]) }}</p>
+                                <p class="mb-0 text-slate-600" style="font-size: 0.8rem; line-height: 1.5;">{{ __('Current conditions indicate a :status level for supply chain operations in :country.', ['status' => __(strtolower($aiRecommendation['status'])), 'country' => $country->name]) }}</p>
                             </div>
 
                             <!-- Top Risk Drivers -->
-                            <p class="section-eyebrow text-slate-400 mb-2">{{ __('Top Risk Drivers') }}</p>
+                            <p class="section-eyebrow text-slate-500 mb-2">{{ __('Top Risk Drivers') }}</p>
                             <div class="d-flex flex-column gap-2 mb-3">
                                 @foreach(array_slice($aiRecommendation['details'], 0, 3) as $detail)
                                     <div class="d-flex gap-2 align-items-start" style="font-size: 0.8rem;">
                                         <i class="bi bi-exclamation-triangle-fill text-warning mt-1 flex-shrink-0"></i>
-                                        <span class="text-slate-200">{{ __($detail) }}</span>
+                                        <span class="text-slate-700">{{ __($detail) }}</span>
                                     </div>
                                 @endforeach
                             </div>
@@ -360,14 +367,14 @@
                             <hr class="ai-section-divider">
 
                             <!-- Recommended Actions -->
-                            <p class="section-eyebrow text-slate-400 mb-2">{{ __('Recommended Actions') }}</p>
-                            <div class="ai-block mb-3" style="font-size: 0.8rem; color: #BAE6FD; line-height: 1.6;">
-                                <i class="bi bi-arrow-right-circle-fill text-sky-300 me-1"></i>
+                            <p class="section-eyebrow text-slate-500 mb-2">{{ __('Recommended Actions') }}</p>
+                            <div class="ai-block mb-3" style="font-size: 0.8rem; color: #1E40AF; line-height: 1.6;">
+                                <i class="bi bi-arrow-right-circle-fill text-primary me-1"></i>
                                 {{ __($aiRecommendation['message']) }}
                             </div>
 
                             <div class="mt-auto text-end">
-                                <span class="text-slate-500" style="font-size: 0.65rem;"><i class="bi bi-clock-history me-1"></i>{{ __('Generated') }}: {{ now()->format('M d, Y H:i') }}</span>
+                                <span class="text-slate-400" style="font-size: 0.65rem;"><i class="bi bi-clock-history me-1"></i>{{ __('Generated') }}: {{ now()->format('M d, Y H:i') }}</span>
                             </div>
                         @else
                             <div class="text-center text-slate-400 py-5 my-auto">
@@ -775,14 +782,14 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.status === 'added') {
-                        btn.classList.remove('btn-custom-navy', 'text-white');
-                        btn.classList.add('btn-warning', 'text-dark');
+                        btn.classList.remove('btn-fav-glass');
+                        btn.classList.add('btn-fav-active');
                         icon.classList.remove('bi-star');
                         icon.classList.add('bi-star-fill');
                         text.innerText = '{{ __("Favorited") }}';
                     } else if (data.status === 'removed') {
-                        btn.classList.remove('btn-warning', 'text-dark');
-                        btn.classList.add('btn-custom-navy', 'text-white');
+                        btn.classList.remove('btn-fav-active');
+                        btn.classList.add('btn-fav-glass');
                         icon.classList.remove('bi-star-fill');
                         icon.classList.add('bi-star');
                         text.innerText = '{{ __("Add to Favorites") }}';

@@ -2,241 +2,23 @@
 
 @push('styles')
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.0.0/css/flag-icons.min.css"/>
-<style>
-    /* ===== Weather Page Base ===== */
-    .weather-page { background: transparent; min-height: calc(100vh - 60px); }
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
 
-    /* ===== SIDEBAR ===== */
-    .weather-sidebar {
-        width: 240px;
-        min-width: 220px;
-        max-width: 260px;
-        flex-shrink: 0;
-        height: calc(100vh - 120px);
-        position: sticky;
-        top: 80px;
-        display: flex;
-        flex-direction: column;
-    }
-    .sidebar-card {
-        background: #fff;
-        border-radius: 20px;
-        border: 1px solid #E5E7EB;
-        box-shadow: 0 4px 18px rgba(0,0,0,0.04);
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-        overflow: hidden;
-    }
-    .country-list {
-        overflow-y: auto;
-        flex-grow: 1;
-        padding: 0 12px 12px;
-    }
-    .country-list::-webkit-scrollbar { width: 4px; }
-    .country-list::-webkit-scrollbar-track { background: transparent; }
-    .country-list::-webkit-scrollbar-thumb { background: #E5E7EB; border-radius: 99px; }
-
-    .country-item {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 10px 12px;
-        border-radius: 12px;
-        border: 1px solid transparent;
-        text-decoration: none;
-        color: inherit;
-        transition: all 0.18s ease;
-        margin-bottom: 4px;
-        cursor: pointer;
-    }
-    .country-item:hover {
-        background: #F0F5FF;
-        border-color: #DBEAFE;
-        transform: translateX(2px);
-        color: inherit;
-    }
-    .country-item.active {
-        background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
-        border-color: #BFDBFE;
-        color: inherit;
-    }
-    .country-item.active .country-name { color: #1D4ED8; font-weight: 700; }
-
-    /* ===== MAIN CONTENT ===== */
-    .weather-main { flex-grow: 1; min-width: 0; }
-
-    /* ===== RIGHT PANEL ===== */
-    .weather-right {
-        width: 280px;
-        min-width: 260px;
-        max-width: 300px;
-        flex-shrink: 0;
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
-    }
-
-    /* ===== CARDS ===== */
-    .w-card {
-        background: #fff;
-        border-radius: 20px;
-        border: 1px solid #E5E7EB;
-        box-shadow: 0 4px 18px rgba(0,0,0,0.04);
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-        overflow: hidden;
-    }
-    .w-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 28px rgba(0,0,0,0.07);
-    }
-    .w-card-body { padding: 22px 24px; }
-    .w-card-header {
-        padding: 16px 24px;
-        border-bottom: 1px solid #F3F4F6;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
-
-    /* ===== MAP ===== */
-    #weatherMap {
-        height: 380px;
-        width: 100%;
-        z-index: 1;
-    }
-
-    /* ===== MINI STAT CARDS ===== */
-    .mini-stat {
-        background: #F8FAFC;
-        border: 1px solid #E5E7EB;
-        border-radius: 16px;
-        padding: 16px;
-        text-align: center;
-        transition: all 0.2s ease;
-        cursor: default;
-    }
-    .mini-stat:hover {
-        background: #fff;
-        border-color: #BFDBFE;
-        box-shadow: 0 4px 12px rgba(37,99,235,0.08);
-        transform: translateY(-2px);
-    }
-    .mini-stat-icon {
-        width: 40px; height: 40px;
-        border-radius: 12px;
-        display: flex; align-items: center; justify-content: center;
-        margin: 0 auto 10px;
-        font-size: 1.1rem;
-    }
-
-    /* ===== WEATHER ICON HERO ===== */
-    .weather-hero-icon {
-        font-size: 5rem;
-        line-height: 1;
-        animation: float 3s ease-in-out infinite;
-        filter: drop-shadow(0 8px 16px rgba(0,0,0,0.08));
-        display: inline-block;
-    }
-    @keyframes float {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-10px); }
-    }
-
-    /* ===== SEARCH ===== */
-    .search-wrap { position: relative; }
-    .search-wrap input {
-        padding-left: 36px;
-        border-radius: 12px;
-        border: 1px solid #E5E7EB;
-        background: #F8FAFC;
-        font-size: 0.875rem;
-        height: 38px;
-        width: 100%;
-        outline: none;
-        transition: border-color 0.2s, box-shadow 0.2s;
-    }
-    .search-wrap input:focus {
-        border-color: #2563EB;
-        box-shadow: 0 0 0 3px rgba(37,99,235,0.08);
-        background: #fff;
-    }
-    .search-wrap .search-icon {
-        position: absolute;
-        left: 11px; top: 50%;
-        transform: translateY(-50%);
-        color: #9CA3AF;
-        pointer-events: none;
-        font-size: 0.85rem;
-    }
-
-    /* ===== ALERT CARD ===== */
-    .alert-item {
-        border-radius: 12px;
-        padding: 14px 16px;
-        border: 1px solid;
-        margin-bottom: 10px;
-        transition: all 0.18s;
-    }
-    .alert-item:hover { transform: translateX(2px); }
-    .alert-item:last-child { margin-bottom: 0; }
-
-    /* ===== REFRESH BUTTON ===== */
-    .btn-refresh {
-        background: #fff;
-        border: 1px solid #E5E7EB;
-        color: #374151;
-        border-radius: 12px;
-        padding: 8px 18px;
-        font-size: 0.875rem;
-        font-weight: 600;
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        transition: all 0.2s;
-        cursor: pointer;
-        text-decoration: none;
-    }
-    .btn-refresh:hover {
-        background: #F0F5FF;
-        border-color: #BFDBFE;
-        color: #2563EB;
-        transform: translateY(-1px);
-    }
-    .btn-refresh:hover .btn-refresh-icon { transform: rotate(180deg); }
-    .btn-refresh-icon { transition: transform 0.4s ease; }
-
-    /* ===== RESPONSIVE ===== */
-    @media (max-width: 1199px) {
-        .weather-sidebar { width: 200px; min-width: 180px; }
-        .weather-right { width: 240px; min-width: 220px; }
-    }
-    @media (max-width: 991px) {
-        .weather-sidebar { width: 100%; max-width: 100%; height: auto; position: static; }
-        .weather-right { width: 100%; max-width: 100%; }
-        .weather-layout { flex-direction: column; }
-        #weatherMap { height: 300px; }
-        .sidebar-card { height: auto; max-height: 320px; }
-    }
-    @media (max-width: 575px) {
-        .w-card-body { padding: 16px; }
-        .weather-hero-icon { font-size: 3.5rem; }
-    }
-</style>
-@endpush
 
 @section('content')
 @php
-    // ── Global variables for the entire weather page ──────────────────────────
     $wea      = $country ? $country->weatherCaches->first() : null;
     $rawData  = $wea ? $wea->raw_data : null;
     $current  = $rawData['current'] ?? null;
     $condText = $wea ? $wea->condition : 'Unknown';
     $lc       = strtolower($condText);
-    if(str_contains($lc,'rain'))                              { $condIcon='bi-cloud-rain-fill';    $condColor='primary'; }
-    elseif(str_contains($lc,'storm')||str_contains($lc,'thunder')) { $condIcon='bi-cloud-lightning-fill'; $condColor='danger'; }
-    elseif(str_contains($lc,'cloud'))                         { $condIcon='bi-cloud-fill';         $condColor='secondary'; }
-    else                                                      { $condIcon='bi-sun-fill';           $condColor='warning'; }
+    
+    if(str_contains($lc, 'snow')) { $condIcon = 'bi-snow'; $condHex = '#60A5FA'; $condBgHex = 'rgba(96,165,250,0.1)'; }
+    elseif(str_contains($lc, 'fog')) { $condIcon = 'bi-cloud-fog2-fill'; $condHex = '#CBD5E1'; $condBgHex = 'rgba(203,213,225,0.15)'; }
+    elseif(str_contains($lc, 'rain')) { $condIcon = 'bi-cloud-rain-fill'; $condHex = '#3B82F6'; $condBgHex = 'rgba(59,130,246,0.1)'; }
+    elseif(str_contains($lc, 'storm') || str_contains($lc, 'thunder')) { $condIcon = 'bi-cloud-lightning-rain-fill'; $condHex = '#EF4444'; $condBgHex = 'rgba(239,68,68,0.1)'; }
+    elseif(str_contains($lc, 'cloud')) { $condIcon = 'bi-cloud-fill'; $condHex = '#94A3B8'; $condBgHex = 'rgba(148,163,184,0.1)'; }
+    else { $condIcon = 'bi-brightness-high-fill'; $condHex = '#F59E0B'; $condBgHex = 'rgba(245,158,11,0.1)'; }
 @endphp
 <style>
     /* ===== Weather Page Base ===== */
@@ -259,15 +41,15 @@
         flex-direction: column;
     }
     .sidebar-card {
-        background: #fff;
-        border-radius: 20px;
-        border: 1px solid #E5E7EB;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+        background: var(--surface-color);
+        border-radius: var(--radius-card);
+        border: 1px solid var(--border-color);
+        box-shadow: var(--shadow-global);
         display: flex;
         flex-direction: column;
         height: 100%;
         overflow: hidden;
-        transition: all 0.3s ease;
+        transition: all var(--transition-speed) ease;
     }
     .sidebar-card:hover {
         box-shadow: 0 10px 30px rgba(0,0,0,0.05);
@@ -304,10 +86,10 @@
     .country-item.active {
         background: #EFF6FF;
         border-color: #DBEAFE;
-        border-left: 4px solid #2563EB;
+        border-left: 4px solid var(--primary);
         color: inherit;
     }
-    .country-item.active .country-name { color: #1D4ED8; font-weight: 700; }
+    .country-item.active .country-name { color: var(--primary-hover); font-weight: 700; }
 
     /* ===== MAIN CONTENT ===== */
     .weather-main { flex-grow: 1; min-width: 0; }
@@ -325,21 +107,20 @@
 
     /* ===== CARDS ===== */
     .w-card {
-        background: #fff;
-        border-radius: 20px;
-        border: 1px solid #E5E7EB;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.02);
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        background: var(--surface-color);
+        border-radius: var(--radius-card);
+        border: 1px solid var(--border-color);
+        box-shadow: var(--shadow-global);
+        transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
         overflow: hidden;
     }
     .w-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 12px 32px rgba(0,0,0,0.06);
+        transform: translateY(-2px);
     }
     .w-card-body { padding: 24px; }
     .w-card-header {
         padding: 20px 24px;
-        border-bottom: 1px solid #F8FAFC;
+        border-bottom: 1px solid var(--border-color);
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -354,22 +135,20 @@
 
     /* ===== MINI STAT CARDS ===== */
     .mini-stat {
-        background: #F8FAFC;
-        border: 1px solid #F1F5F9;
-        border-radius: 16px;
+        background: var(--surface-color);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-card);
         padding: 20px 16px;
         text-align: center;
-        transition: all 0.2s ease;
+        transition: all var(--transition-speed) ease;
         cursor: default;
         height: 100%;
         display: flex;
         flex-direction: column;
         justify-content: center;
+        box-shadow: var(--shadow-global);
     }
     .mini-stat:hover {
-        background: #fff;
-        border-color: #BFDBFE;
-        box-shadow: 0 4px 16px rgba(37,99,235,0.06);
         transform: translateY(-2px);
     }
     .mini-stat-icon {
@@ -398,7 +177,7 @@
     .search-wrap input {
         padding-left: 40px;
         border-radius: 14px;
-        border: 1px solid #E5E7EB;
+        border: 1px solid var(--border-color);
         background: #F8FAFC;
         font-size: 0.9rem;
         height: 44px;
@@ -407,9 +186,9 @@
         transition: all 0.2s;
     }
     .search-wrap input:focus {
-        border-color: #2563EB;
+        border-color: var(--primary);
         box-shadow: 0 0 0 4px rgba(37,99,235,0.1);
-        background: #fff;
+        background: var(--surface-color);
     }
     .search-wrap .search-icon {
         position: absolute;
@@ -422,35 +201,34 @@
 
     /* ===== ALERT CARD ===== */
     .alert-item {
-        border-radius: 14px;
+        border-radius: var(--radius-card);
         padding: 16px 20px;
         border: 1px solid;
-        transition: all 0.2s;
+        transition: all var(--transition-speed);
+        box-shadow: var(--shadow-global);
     }
     .alert-item:hover { transform: translateX(3px); }
 
     /* ===== REFRESH BUTTON ===== */
     .btn-refresh {
-        background: #2563EB;
-        border: 1px solid #2563EB;
+        background: var(--primary);
+        border: 1px solid var(--primary);
         color: #ffffff;
-        border-radius: 6px;
+        border-radius: var(--radius-button);
         padding: 4px 10px;
         font-size: 0.65rem;
         font-weight: 600;
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
         cursor: pointer;
         text-decoration: none;
-        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
     }
     .btn-refresh:hover {
-        background: #1D4ED8;
-        border-color: #1D4ED8;
+        background: var(--primary-hover);
+        border-color: var(--primary-hover);
         transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3);
         color: #ffffff;
     }
     .btn-refresh:active {
@@ -462,8 +240,8 @@
     /* ===== EMPTY STATE ===== */
     .empty-state {
         background: #F8FAFC;
-        border-radius: 16px;
-        border: 1px dashed #CBD5E1;
+        border-radius: var(--radius-card);
+        border: 1px dashed var(--border-color);
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -492,6 +270,162 @@
         #weatherMap { height: 350px; }
         .sidebar-card { height: auto; max-height: 400px; }
         .weather-hero-icon { font-size: 4rem; }
+    }
+
+    /* ===== MODERN WEATHER MARKERS ===== */
+    .premium-marker {
+        width: 44px;
+        height: 44px;
+        background-color: #FFFFFF;
+        border: 1px solid #E2E8F0;
+        border-radius: 999px;
+        box-shadow: 0 8px 24px rgba(15,23,42,0.10);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 200ms ease;
+        cursor: pointer;
+        position: relative;
+    }
+    .premium-marker i {
+        font-size: 20px;
+        transition: transform 200ms ease;
+    }
+    .premium-marker:hover {
+        transform: scale(1.1);
+        box-shadow: 0 12px 32px rgba(15,23,42,0.15);
+        border-color: #CBD5E1;
+        z-index: 1000 !important;
+    }
+    .premium-marker.active-marker {
+        border: 2px solid #3B82F6;
+        box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15), 0 8px 24px rgba(15,23,42,0.15);
+        animation: markerBounce 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        z-index: 1000 !important;
+    }
+    @keyframes markerBounce {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.2); }
+        100% { transform: scale(1); }
+    }
+
+    /* ===== CLUSTER STYLING ===== */
+    .premium-cluster {
+        width: 44px;
+        height: 44px;
+        background-color: #FFFFFF;
+        border: 2px solid #3B82F6;
+        border-radius: 999px;
+        box-shadow: 0 8px 24px rgba(15,23,42,0.10);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Inter', sans-serif;
+        font-weight: 700;
+        color: #3B82F6;
+        font-size: 15px;
+        transition: all 200ms ease;
+    }
+    .premium-cluster:hover {
+        transform: scale(1.1);
+        background-color: #F8FAFC;
+    }
+
+    /* ===== MODERN POPUP ===== */
+    .leaflet-popup-content-wrapper {
+        background: #FFFFFF;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(15,23,42,0.12);
+        padding: 0;
+        border: 1px solid #E2E8F0;
+        overflow: hidden;
+    }
+    .leaflet-popup-content {
+        margin: 0;
+        width: 240px !important;
+    }
+    .leaflet-popup-tip-container {
+        display: none;
+    }
+    .modern-popup {
+        padding: 20px;
+        font-family: 'Inter', sans-serif;
+    }
+    .modern-popup-header {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 16px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid #F1F5F9;
+    }
+    .modern-popup-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        flex-shrink: 0;
+    }
+    .modern-popup-temp {
+        font-size: 26px;
+        font-weight: 800;
+        color: #0F172A;
+        line-height: 1;
+        letter-spacing: -0.5px;
+    }
+    .modern-popup-desc {
+        font-size: 13px;
+        color: #64748B;
+        text-transform: capitalize;
+        font-weight: 500;
+        margin-top: 6px;
+    }
+    .modern-popup-location {
+        font-weight: 700;
+        color: #1E293B;
+        font-size: 15px;
+        margin-bottom: 4px;
+    }
+    .modern-popup-country {
+        color: #94A3B8;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-weight: 600;
+    }
+    .modern-popup-stats {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 16px;
+        background: #F8FAFC;
+        padding: 10px 12px;
+        border-radius: 10px;
+    }
+    .modern-popup-stat {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+        color: #475569;
+        font-weight: 600;
+    }
+    .modern-popup-stat i {
+        color: #94A3B8;
+        font-size: 14px;
+    }
+    .leaflet-container a.leaflet-popup-close-button {
+        color: #94A3B8;
+        padding: 12px;
+        width: 32px;
+        height: 32px;
+        font-size: 18px;
+    }
+    .leaflet-container a.leaflet-popup-close-button:hover {
+        color: #0F172A;
+        background: transparent;
     }
 </style>
 
@@ -546,6 +480,7 @@
                         <span class="d-flex align-items-center gap-1"><span style="width:10px;height:10px;background:#94A3B8;border-radius:50%;display:inline-block;"></span> {{ __('Cloudy') }}</span>
                         <span class="d-flex align-items-center gap-1"><span style="width:10px;height:10px;background:#0EA5E9;border-radius:50%;display:inline-block;"></span> {{ __('Rain') }}</span>
                         <span class="d-flex align-items-center gap-1"><span style="width:10px;height:10px;background:#EF4444;border-radius:50%;display:inline-block;"></span> {{ __('Storm') }}</span>
+                        <span class="d-flex align-items-center gap-1"><span style="width:10px;height:10px;background:#60A5FA;border-radius:50%;display:inline-block;"></span> {{ __('Snow') }}</span>
                     </div>
                 </div>
                 @if(!$country)
@@ -647,13 +582,13 @@
 
                 {{-- Big Weather --}}
                 <div class="w-card-body text-center py-5">
-                    <div class="weather-hero-icon text-{{ $condColor ?? 'warning' }} mb-4">
-                        <i class="bi {{ $condIcon ?? 'bi-sun-fill' }}"></i>
+                    <div class="weather-hero-icon mb-4" style="color: {{ $condHex ?? '#F59E0B' }};">
+                        <i class="bi {{ $condIcon ?? 'bi-brightness-high-fill' }}"></i>
                     </div>
                     <div class="fw-bold text-dark lh-1" style="font-size:4.5rem; letter-spacing:-2px; margin-bottom: 0.5rem;">
                         {{ $wea ? round($wea->temperature) : '-' }}°
                     </div>
-                    <div class="d-inline-flex align-items-center justify-content-center bg-{{ $condColor }} bg-opacity-10 text-{{ $condColor }} px-4 py-2 rounded-pill fw-bold" style="font-size:0.9rem; letter-spacing:1px; text-transform: uppercase;">
+                    <div class="d-inline-flex align-items-center justify-content-center px-4 py-2 rounded-pill fw-bold" style="background-color: {{ $condBgHex ?? 'rgba(245,158,11,0.1)' }}; color: {{ $condHex ?? '#F59E0B' }}; font-size:0.9rem; letter-spacing:1px; text-transform: uppercase;">
                         {{ __($condText ?? 'Unknown') }}
                     </div>
                 </div>
@@ -749,6 +684,7 @@
 
 
 @push('scripts')
+<script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
 @php
     $mapSearchDataWeather = \App\Models\Country::orderBy('name')->get()->map(function($c) {
         return [
@@ -844,12 +780,14 @@
         if (mapElement && typeof L !== 'undefined') {
             const lat = {{ $country->latitude }};
             const lng = {{ $country->longitude }};
-            const map = L.map('weatherMap').setView([20, 0], 2);
+            const map = L.map('weatherMap', { zoomControl: false }).setView([20, 0], 2);
 
             L.tileLayer('http://mt0.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
                 attribution: '&copy; Google Maps',
                 maxZoom: 20
             }).addTo(map);
+
+            L.control.zoom({ position: 'bottomright' }).addTo(map);
 
             setTimeout(() => {
                 map.flyTo([lat, lng], 5, {
@@ -858,45 +796,108 @@
                 });
             }, 400);
 
-            // Custom Marker based on condition
             @php
-                $cond = strtolower($wea->condition ?? '');
-                $markerColor = str_contains($cond, 'rain') ? '#0EA5E9' : (str_contains($cond, 'storm') || str_contains($cond, 'thunder') ? '#EF4444' : (str_contains($cond, 'cloud') ? '#94A3B8' : '#F59E0B'));
-                $iconClass = str_contains($cond, 'rain') ? 'bi-cloud-rain-fill' : (str_contains($cond, 'storm') || str_contains($cond, 'thunder') ? 'bi-cloud-lightning-fill' : (str_contains($cond, 'cloud') ? 'bi-cloud-fill' : 'bi-sun-fill'));
+                function getMarkerStyle($cond) {
+                    $cond = strtolower($cond);
+                    if(str_contains($cond, 'snow')) return ['icon' => 'bi-snow', 'color' => '#60A5FA', 'bg' => 'rgba(96,165,250,0.1)'];
+                    if(str_contains($cond, 'fog')) return ['icon' => 'bi-cloud-fog2-fill', 'color' => '#CBD5E1', 'bg' => 'rgba(203,213,225,0.15)'];
+                    if(str_contains($cond, 'rain')) return ['icon' => 'bi-cloud-rain-fill', 'color' => '#3B82F6', 'bg' => 'rgba(59,130,246,0.1)'];
+                    if(str_contains($cond, 'storm') || str_contains($cond, 'thunder')) return ['icon' => 'bi-cloud-lightning-rain-fill', 'color' => '#EF4444', 'bg' => 'rgba(239,68,68,0.1)'];
+                    if(str_contains($cond, 'cloud')) return ['icon' => 'bi-cloud-fill', 'color' => '#94A3B8', 'bg' => 'rgba(148,163,184,0.1)'];
+                    return ['icon' => 'bi-brightness-high-fill', 'color' => '#F59E0B', 'bg' => 'rgba(245,158,11,0.1)'];
+                }
             @endphp
 
-            const markerHtml = `
-                <div style="background-color: ${'{{ $markerColor }}'}; color: white; border-radius: 10px; padding: 5px 12px; display: flex; align-items: center; gap: 6px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); font-weight: 700; font-family: 'Inter', sans-serif; font-size: 13px; white-space: nowrap;">
-                    <i class="bi ${'{{ $iconClass }}'}" style="font-size:14px;"></i> ${'{{ round($wea->temperature ?? 0) }}'}°C
+            // Main Active Marker
+            @php $mStyle = getMarkerStyle($wea->condition ?? ''); @endphp
+
+            const mainMarkerHtml = `
+                <div class="premium-marker active-marker">
+                    <i class="bi {{ $mStyle['icon'] }}" style="color: {{ $mStyle['color'] }};"></i>
+                </div>
+            `;
+            const mainPopupHtml = `
+                <div class="modern-popup">
+                    <div class="modern-popup-header">
+                        <div class="modern-popup-icon" style="background: {{ $mStyle['bg'] }}; color: {{ $mStyle['color'] }};">
+                            <i class="bi {{ $mStyle['icon'] }}"></i>
+                        </div>
+                        <div>
+                            <div class="modern-popup-temp">{{ round($wea->temperature ?? 0) }}°</div>
+                            <div class="modern-popup-desc">{{ $wea->condition ?? 'Unknown' }}</div>
+                        </div>
+                    </div>
+                    <div class="modern-popup-location">{{ $country->name }}</div>
+                    <div class="modern-popup-country">{{ $country->region ?? 'Global' }}</div>
+                    <div class="modern-popup-stats">
+                        <div class="modern-popup-stat">
+                            <i class="bi bi-droplet-fill"></i> {{ $current['relative_humidity_2m'] ?? '-' }}%
+                        </div>
+                        <div class="modern-popup-stat">
+                            <i class="bi bi-wind"></i> {{ round($wea->wind_speed ?? 0) }} km/h
+                        </div>
+                    </div>
                 </div>
             `;
             
-            const customIcon = L.divIcon({
-                html: markerHtml,
-                className: '',
-                iconSize: [80, 32],
-                iconAnchor: [40, 32]
-            });
+            const mainMarker = L.marker([lat, lng], {
+                icon: L.divIcon({
+                    html: mainMarkerHtml,
+                    className: '',
+                    iconSize: [44, 44],
+                    iconAnchor: [22, 22],
+                    popupAnchor: [0, -26]
+                })
+            }).bindPopup(mainPopupHtml).addTo(map);
 
-            L.marker([lat, lng], {icon: customIcon}).addTo(map)
-             .bindPopup(`<b>${'{{ $country->name }}'}</b><br>${'{{ $wea->condition ?? "Unknown" }}'}`);
-             
+            // Other Countries
             @foreach($countries as $other)
                 @if($other->id !== $country->id && $other->weatherCaches->isNotEmpty())
                     @php 
-                        $ow = $other->weatherCaches->first(); 
-                        $ocond = strtolower($ow->condition ?? '');
-                        $omColor = str_contains($ocond, 'rain') ? '#0EA5E9' : (str_contains($ocond, 'storm') || str_contains($ocond, 'thunder') ? '#EF4444' : (str_contains($ocond, 'cloud') ? '#94A3B8' : '#F59E0B'));
-                        $oIconClass = str_contains($ocond, 'rain') ? 'bi-cloud-rain-fill' : (str_contains($ocond, 'storm') || str_contains($ocond, 'thunder') ? 'bi-cloud-lightning-fill' : (str_contains($ocond, 'cloud') ? 'bi-cloud-fill' : 'bi-sun-fill'));
+                        $ow = $other->weatherCaches->first();
+                        $oStyle = getMarkerStyle($ow->condition ?? '');
+                        $oRaw = is_string($ow->raw_data) ? json_decode($ow->raw_data, true) : $ow->raw_data;
+                        $oHum = $oRaw['current']['relative_humidity_2m'] ?? '-';
                     @endphp
-                    L.marker([{{ $other->latitude }}, {{ $other->longitude }}], {
+                    
+                    const markerHtml_{{ $other->id }} = `
+                        <div class="premium-marker">
+                            <i class="bi {{ $oStyle['icon'] }}" style="color: {{ $oStyle['color'] }};"></i>
+                        </div>
+                    `;
+                    const popupHtml_{{ $other->id }} = `
+                        <div class="modern-popup">
+                            <div class="modern-popup-header">
+                                <div class="modern-popup-icon" style="background: {{ $oStyle['bg'] }}; color: {{ $oStyle['color'] }};">
+                                    <i class="bi {{ $oStyle['icon'] }}"></i>
+                                </div>
+                                <div>
+                                    <div class="modern-popup-temp">{{ round($ow->temperature ?? 0) }}°</div>
+                                    <div class="modern-popup-desc">{{ $ow->condition ?? 'Unknown' }}</div>
+                                </div>
+                            </div>
+                            <div class="modern-popup-location">{{ addslashes($other->name) }}</div>
+                            <div class="modern-popup-country">{{ addslashes($other->region ?? 'Global') }}</div>
+                            <div class="modern-popup-stats">
+                                <div class="modern-popup-stat">
+                                    <i class="bi bi-droplet-fill"></i> {{ $oHum }}%
+                                </div>
+                                <div class="modern-popup-stat">
+                                    <i class="bi bi-wind"></i> {{ round($ow->wind_speed ?? 0) }} km/h
+                                </div>
+                            </div>
+                        </div>
+                    `;
+
+                    const m_{{ $other->id }} = L.marker([{{ $other->latitude }}, {{ $other->longitude }}], {
                         icon: L.divIcon({
-                            html: `<div title="${'{{ $ow->condition ?? "" }}'} - ${'{{ round($ow->temperature) }}'}°C" style="background-color: ${'{{ $omColor }}'}; color: white; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(0,0,0,0.2); font-size: 13px;"><i class="bi ${'{{ $oIconClass }}'}" style="line-height:1;"></i></div>`,
+                            html: markerHtml_{{ $other->id }},
                             className: '',
-                            iconSize: [28, 28],
-                            iconAnchor: [14, 14]
+                            iconSize: [44, 44],
+                            iconAnchor: [22, 22],
+                            popupAnchor: [0, -26]
                         })
-                    }).addTo(map);
+                    }).bindPopup(popupHtml_{{ $other->id }}).addTo(map);
                 @endif
             @endforeach
         }

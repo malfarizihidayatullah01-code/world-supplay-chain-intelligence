@@ -53,5 +53,10 @@ download_capitals*.php
 fix_tanjung.php
 reduce_ports*.php
 seed_articles.php
-sync.php
 update_capitals*.php
+
+# Recent temporary tools
+sync.php
+update_lang.php
+translate_views.php
+temp_dashboard.blade.php

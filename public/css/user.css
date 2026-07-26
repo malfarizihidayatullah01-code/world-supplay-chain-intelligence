@@ -1,0 +1,120 @@
+/* public/css/user.css - User Dashboard Custom Styles */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+    /* Default Theme: Forest (As Requested) */
+    --background: #F5F7FA;
+    --sidebar: #13212E;
+    --primary: #2F7A68;
+    --secondary: #56C5A8;
+    --success: #22C55E;
+    --warning: #FBBF24;
+    --danger: #EF4444;
+    --info: #3B82F6;
+    --card: #FFFFFF;
+    --text: #1F2937;
+    --text-muted: #6B7280;
+    --border: #E5E7EB;
+
+    --sidebar-hover: #1E3140;
+    --sidebar-text: #FFFFFF;
+    
+    /* Layout Variables */
+    --sidebar-width: 260px;
+    --card-radius: 20px;
+    --card-shadow: 0 15px 40px rgba(0, 0, 0, 0.05); /* Lighter shadow for premium feel */
+    --hover-shadow: 0 20px 45px rgba(0, 0, 0, 0.08);
+    --transition: 0.25s ease;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--background);
+    color: var(--text);
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+/* Typography Overrides */
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+    color: var(--text);
+}
+p {
+    font-weight: 500;
+}
+.text-muted {
+    color: var(--text-muted) !important;
+}
+
+/* Utility Overrides using CSS Variables */
+.bg-primary { background-color: var(--primary) !important; }
+.text-primary { color: var(--primary) !important; }
+.bg-success { background-color: var(--success) !important; }
+.text-success { color: var(--success) !important; }
+.bg-warning { background-color: var(--warning) !important; }
+.text-warning { color: var(--warning) !important; }
+.bg-danger { background-color: var(--danger) !important; }
+.text-danger { color: var(--danger) !important; }
+.bg-info { background-color: var(--info) !important; }
+.text-info { color: var(--info) !important; }
+
+/* Global Card Design */
+.card, .premium-card {
+    background-color: var(--card);
+    border-radius: var(--card-radius);
+    border: 1px solid var(--border);
+    box-shadow: var(--card-shadow);
+    padding: 24px;
+    transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.card:hover, .premium-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--hover-shadow);
+}
+
+/* Buttons */
+.btn-primary {
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    border: none;
+    color: white;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-weight: 600;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.btn-primary:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+    color: white;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+    animation: fadeIn 200ms ease-out forwards;
+}
+
+/* Scrollbar customization */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
+}

@@ -14,50 +14,8 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <!-- Flag Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.0.0/css/flag-icons.min.css"/>
+    <link href="{{ asset('css/design-system.css') }}" rel="stylesheet">
     <style>
-        :root {
-            --primary: #4A7A44; /* Forest green from image */
-            --primary-hover: #3C6337;
-            --primary-soft: #E9F1E2; /* Very soft pistachio for accent backgrounds */
-            --bg-light: #F9FBF6; /* Soft warm eco-friendly cream */
-            --text-dark: #1E2D1D; /* Deep earthy green-black */
-            --text-muted: #6B7A68;
-            --card-border-radius: 24px;
-            --transition-speed: 0.3s;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-light);
-            color: var(--text-dark);
-            overflow-x: hidden;
-        }
-
-        /* Override Bootstrap Primary to Eco-Friendly Green */
-        .bg-primary { background-color: var(--primary) !important; }
-        .text-primary { color: var(--primary) !important; }
-        .btn-primary { background-color: var(--primary) !important; border-color: var(--primary) !important; border-radius: 50px; padding: 10px 24px; font-weight: 600; }
-        .btn-primary:hover { background-color: var(--primary-hover) !important; border-color: var(--primary-hover) !important; }
-        
-        .bg-primary.bg-opacity-10 { background-color: var(--primary-soft) !important; opacity: 1 !important; }
-        
-        /* Navbar specific styling */
-        .top-header { background-color: var(--bg-light); }
-        
-        /* Global Card Styling (Eco-Friendly Vibe) */
-        .card {
-            border-radius: var(--card-border-radius) !important;
-            border: none !important;
-            box-shadow: 0 8px 24px rgba(60, 99, 55, 0.04) !important;
-        }
-        
-        /* Badges & Pills */
-        .badge {
-            border-radius: 50px !important;
-            padding: 0.5em 1em !important;
-            font-weight: 600;
-        }
-
         /* Enterprise Top Navbar Layout */
         .top-header-wrapper {
             padding: 16px 24px 0 24px;
@@ -210,26 +168,6 @@
             transition: all var(--transition-speed);
         }
 
-        /* Card Styles */
-        .card {
-            border: none;
-            border-radius: 20px; /* More rounded */
-            box-shadow: 0 4px 20px rgba(0,0,0,0.02);
-            margin-bottom: 24px;
-            transition: transform var(--transition-speed), box-shadow var(--transition-speed);
-            background-color: #ffffff;
-        }
-        
-        .card-header {
-            background-color: transparent;
-            border-bottom: 1px solid #f3f4f6;
-            padding: 16px 20px;
-            font-weight: 600;
-            border-radius: 20px 20px 0 0 !important;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
         
         /* Utility */
         .bg-lime-soft { background-color: rgba(221, 247, 102, 0.4); color: #4a5c00; }
@@ -256,7 +194,7 @@
         </div>
     @else
         <!-- SaaS Layout (Centered Pill Navbar) -->
-        <div class="top-header-wrapper d-none d-lg-block">
+        <div class="top-header-wrapper d-none d-lg-block" style="max-width: 1700px; margin: 0 auto;">
             <header class="top-header">
                 <div class="top-header-main">
                     <!-- Left: Title & Subtitle -->
@@ -379,7 +317,27 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // Optional global scripts
+            if (typeof Chart !== 'undefined') {
+                Chart.defaults.font.family = "'Inter', sans-serif";
+                Chart.defaults.color = "#64748B"; // Text Secondary
+                Chart.defaults.scale.grid.color = "#E2E8F0"; // Light Gray / Border Color
+                Chart.defaults.plugins.tooltip.backgroundColor = "#FFFFFF"; // White Card
+                Chart.defaults.plugins.tooltip.titleColor = "#0F172A"; // Text Primary
+                Chart.defaults.plugins.tooltip.bodyColor = "#64748B"; // Text Secondary
+                Chart.defaults.plugins.tooltip.borderColor = "#E2E8F0";
+                Chart.defaults.plugins.tooltip.borderWidth = 1;
+                Chart.defaults.plugins.tooltip.cornerRadius = 12;
+                Chart.defaults.plugins.tooltip.padding = 12;
+                Chart.defaults.plugins.tooltip.titleFont = { size: 14, weight: 'bold' };
+                Chart.defaults.plugins.tooltip.bodyFont = { size: 13 };
+                Chart.defaults.elements.line.borderWidth = 3;
+                Chart.defaults.elements.point.radius = 4;
+                Chart.defaults.elements.point.hoverRadius = 6;
+                Chart.defaults.elements.point.hoverBorderWidth = 2;
+                Chart.defaults.animation.duration = 400;
+                Chart.defaults.plugins.legend.labels.usePointStyle = true;
+                Chart.defaults.plugins.legend.labels.padding = 20;
+            }
         });
     </script>
     @stack('scripts')

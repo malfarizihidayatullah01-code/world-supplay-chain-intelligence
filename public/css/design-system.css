@@ -1,0 +1,296 @@
+/* Enterprise Design System */
+
+:root {
+    /* Global Color System */
+    --bg-color: #F8FAFC;
+    --surface-color: #FFFFFF;
+    
+    --primary: #2563EB;
+    --primary-hover: #1D4ED8;
+    
+    --success: #10B981;
+    --warning: #F59E0B;
+    --danger: #EF4444;
+    --info: #3B82F6;
+
+    /* Bootstrap Overrides */
+    --bs-primary: #2563EB;
+    --bs-primary-rgb: 37, 99, 235;
+    --bs-success: #10B981;
+    --bs-success-rgb: 16, 185, 129;
+    --bs-warning: #F59E0B;
+    --bs-warning-rgb: 245, 158, 11;
+    --bs-danger: #EF4444;
+    --bs-danger-rgb: 239, 68, 68;
+    --bs-info: #3B82F6;
+    --bs-info-rgb: 59, 130, 246;
+    
+    --text-primary: #0F172A;
+    --text-secondary: #64748B;
+    
+    --border-color: #E2E8F0;
+
+    /* Shadows */
+    --shadow-global: 0 8px 30px rgba(15, 23, 42, 0.06);
+    
+    /* Typography */
+    --font-family: 'Inter', sans-serif;
+    
+    /* Border Radius */
+    --radius-card: 16px;
+    --radius-button: 12px;
+    --radius-input: 12px;
+    --radius-modal: 20px;
+    --radius-badge: 999px;
+
+    /* Spacing */
+    --page-padding: 32px;
+    --section-gap: 24px;
+    --card-gap: 20px;
+    --widget-gap: 20px;
+
+    /* Hover Animation */
+    --transition-speed: 200ms;
+}
+
+body {
+    font-family: var(--font-family);
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+}
+
+/* Gradients for Hero Sections ONLY */
+.bg-gradient-primary {
+    background: linear-gradient(135deg, #2563EB, #3B82F6) !important;
+    color: #FFFFFF !important;
+}
+
+.bg-gradient-success {
+    background: linear-gradient(135deg, #10B981, #34D399) !important;
+    color: #FFFFFF !important;
+}
+
+.bg-gradient-danger {
+    background: linear-gradient(135deg, #EF4444, #F87171) !important;
+    color: #FFFFFF !important;
+}
+
+.bg-gradient-warning {
+    background: linear-gradient(135deg, #F59E0B, #FBBF24) !important;
+    color: #FFFFFF !important;
+}
+
+/* Global Typography Weights */
+h1, h2, .title-text { font-weight: 700 !important; }
+h3, h4, h5, h6, .subtitle-text { font-weight: 600 !important; }
+p, .body-text { font-weight: 400 !important; }
+small, .small-text { font-weight: 500 !important; }
+
+/* Overriding Bootstrap Primary classes removed. Using CSS variables instead. */
+
+/* Global Card Component */
+.card {
+    background-color: var(--surface-color) !important;
+    border-radius: var(--radius-card) !important;
+    border: 1px solid var(--border-color) !important;
+    box-shadow: var(--shadow-global) !important;
+    padding: 24px !important;
+    transition: transform var(--transition-speed) ease;
+}
+
+/* For specific layout wrappers that use bootstrap's card but have custom padding */
+.card > .card-body {
+    padding: 0 !important; /* Move padding to the card wrapper based on new design system */
+}
+/* If they don't have .card wrapper, keep standard */
+
+.card:hover {
+    transform: translateY(-2px);
+}
+
+.card-header {
+    background-color: transparent !important;
+    border-bottom: 1px solid var(--border-color) !important;
+    padding: 0 0 16px 0 !important;
+    margin-bottom: 16px !important;
+    font-weight: 600 !important;
+    border-radius: 0 !important;
+}
+
+.card-footer {
+    background-color: transparent !important;
+    border-top: 1px solid var(--border-color) !important;
+    padding: 16px 0 0 0 !important;
+    margin-top: 16px !important;
+}
+
+/* Specific metric card styling used on Dashboard, Weather, Shipments */
+.metric-card {
+    background-color: var(--surface-color) !important;
+    border-radius: var(--radius-card) !important;
+    border: 1px solid var(--border-color) !important;
+    box-shadow: var(--shadow-global) !important;
+    padding: 20px !important; /* Slightly tighter for metric cards */
+    transition: transform var(--transition-speed) ease;
+}
+
+.metric-card:hover {
+    transform: translateY(-2px);
+}
+
+/* Button Styles */
+.btn {
+    border-radius: var(--radius-button) !important;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 16px;
+    font-weight: 600;
+    transition: background-color var(--transition-speed) ease, border-color var(--transition-speed) ease, color var(--transition-speed) ease !important;
+}
+
+.btn-primary {
+    background-color: var(--primary) !important;
+    border-color: var(--primary) !important;
+    color: #FFFFFF !important;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover) !important;
+    border-color: var(--primary-hover) !important;
+}
+
+.btn-secondary {
+    background-color: var(--surface-color) !important;
+    border-color: var(--border-color) !important;
+    color: var(--text-primary) !important;
+}
+
+.btn-secondary:hover {
+    background-color: #F1F5F9 !important; /* Gray-100 */
+}
+
+.btn-danger {
+    background-color: var(--danger) !important;
+    border-color: var(--danger) !important;
+    color: #FFFFFF !important;
+}
+
+.btn-success {
+    background-color: var(--success) !important;
+    border-color: var(--success) !important;
+    color: #FFFFFF !important;
+}
+
+/* Form Controls (Inputs, Select) */
+.form-control, .form-select {
+    border-radius: var(--radius-input) !important;
+    border: 1px solid #CBD5E1 !important; /* Requested input border color */
+    padding: 10px 16px !important;
+    height: 40px;
+    background-color: var(--surface-color);
+    color: var(--text-primary);
+    transition: border-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15) !important;
+    outline: none !important;
+}
+
+/* Search and Filter Boxes */
+.search-box, .filter-box {
+    border-radius: var(--radius-input) !important;
+    border: 1px solid #CBD5E1 !important;
+    background-color: var(--surface-color);
+    transition: border-color var(--transition-speed) ease;
+}
+.search-box:focus-within {
+    border-color: var(--primary) !important;
+}
+
+/* Badges */
+.badge {
+    border-radius: var(--radius-badge) !important;
+    padding: 6px 12px !important;
+    font-weight: 500 !important;
+    font-size: 12px !important;
+}
+
+.badge-low-risk, .badge-completed {
+    background-color: rgba(16, 185, 129, 0.1) !important;
+    color: var(--success) !important;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.badge-medium-risk {
+    background-color: rgba(245, 158, 11, 0.1) !important;
+    color: var(--warning) !important;
+    border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+.badge-high-risk, .badge-cancelled {
+    background-color: rgba(239, 68, 68, 0.1) !important;
+    color: var(--danger) !important;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.badge-stable {
+    background-color: rgba(37, 99, 235, 0.1) !important;
+    color: var(--primary) !important;
+    border: 1px solid rgba(37, 99, 235, 0.2);
+}
+
+.badge-pending {
+    background-color: rgba(100, 116, 139, 0.1) !important;
+    color: var(--text-secondary) !important;
+    border: 1px solid rgba(100, 116, 139, 0.2);
+}
+
+/* Alerts */
+.alert {
+    border-radius: var(--radius-card) !important;
+    border: 1px solid var(--border-color) !important;
+    padding: 16px 20px !important;
+}
+
+/* Empty State */
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 24px;
+    text-align: center;
+    color: var(--text-secondary);
+    background-color: var(--surface-color);
+    border-radius: var(--radius-card);
+    border: 1px dashed #CBD5E1;
+}
+
+.empty-state i {
+    font-size: 48px;
+    color: #CBD5E1;
+    margin-bottom: 16px;
+}
+
+/* Text Colors Utility */
+.text-muted { color: var(--text-secondary) !important; }
+.text-dark { color: var(--text-primary) !important; }
+
+/* Dashboard specific KPI Colors */
+.kpi-countries { background: rgba(37, 99, 235, 0.1); color: var(--primary); } /* Blue */
+.kpi-risk { background: rgba(239, 68, 68, 0.1); color: var(--danger); } /* Red */
+.kpi-news { background: rgba(37, 99, 235, 0.1); color: var(--primary); } /* Blue */
+.kpi-weather { background: rgba(16, 185, 129, 0.1); color: var(--success); } /* Green */
+.kpi-currency { background: rgba(245, 158, 11, 0.1); color: var(--warning); } /* Orange */
+
+/* Section Headers */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--section-gap);
+}

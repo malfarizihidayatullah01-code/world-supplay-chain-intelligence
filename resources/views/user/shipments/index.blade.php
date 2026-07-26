@@ -1,14 +1,100 @@
 @extends('layouts.app')
+
+@push('styles')
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --primary: #2563EB;
+        --primary-hover: #1D4ED8;
+        --text-main: #0F172A;
+        --radius: 12px;
+    }
+    .txt-title { font-family: 'Inter', sans-serif; font-size: 28px; font-weight: 700; color: var(--text-main); letter-spacing: -0.5px; }
+    .btn-ent-primary {
+        background-color: var(--primary);
+        color: white;
+        border: none;
+        border-radius: var(--radius);
+        padding: 10px 24px;
+        font-family: 'Inter', sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+        text-decoration: none;
+    }
+    .btn-ent-primary:hover {
+        background-color: var(--primary-hover);
+        color: white;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(37, 99, 235, 0.3);
+    }
+    
+    .btn-action {
+        width: 36px;
+        height: 36px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        border: none;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        background: transparent;
+        font-size: 15px;
+    }
+    .btn-action-text {
+        width: auto;
+        padding: 0 16px;
+        font-size: 13px;
+        font-weight: 600;
+        gap: 6px;
+    }
+    .btn-action.action-view {
+        color: #2563EB;
+        background: #EFF6FF;
+    }
+    .btn-action.action-view:hover {
+        background: #2563EB;
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
+    }
+    .btn-action.action-edit {
+        color: #D97706;
+        background: #FEF3C7;
+    }
+    .btn-action.action-edit:hover {
+        background: #D97706;
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(217, 119, 6, 0.2);
+    }
+    .btn-action.action-delete {
+        color: #DC2626;
+        background: #FEE2E2;
+    }
+    .btn-action.action-delete:hover {
+        background: #DC2626;
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(220, 38, 38, 0.2);
+    }
+</style>
+@endpush
+
 @section('content')
-<div class="row mb-4">
+<div class="row mb-4 align-items-center mt-2">
     <div class="col d-flex justify-content-between align-items-center">
-        <h2 class="mb-0 fw-bold">{{ __('My Shipments') }}</h2>
-        <a href="{{ route('user.shipments.create') }}" class="btn fw-bold px-4 rounded-pill shadow-sm text-white" style="background-color: var(--primary-navy);"><i class="bi bi-plus-lg me-1"></i> {{ __('Create Shipment') }}</a>
+        <h2 class="txt-title m-0">{{ __('My Shipments') }}</h2>
+        <a href="{{ route('user.shipments.create') }}" class="btn-ent-primary d-inline-flex align-items-center gap-2">
+            <i class="bi bi-plus-lg"></i> {{ __('Create Shipment') }}
+        </a>
     </div>
 </div>
 
+
 <!-- Search & Filter Card -->
-<div class="card border-0 shadow-sm mb-4 bg-white rounded-3">
+<div class="card border-0 mb-4 rounded-4" style="background-color: var(--surface-color); border: 1px solid var(--border-color) !important; box-shadow: var(--shadow-global);">
     <div class="card-body p-4">
         <form action="{{ route('user.shipments.index') }}" method="GET" id="filterForm">
             <div class="row g-3">
@@ -41,7 +127,7 @@
                     </select>
                 </div>
                 <div class="col-md-1 d-flex align-items-end">
-                    <button type="submit" class="btn w-100 fw-bold" id="btnFilter" style="background-color: #CCD4DE; color: var(--primary-navy); border: none;">
+                    <button type="submit" class="btn w-100 fw-bold" id="btnFilter" style="background-color: var(--primary); color: white; border: none; border-radius: var(--radius-button); transition: all var(--transition-speed);">
                         <span class="spinner-border spinner-border-sm d-none" id="filterSpinner" role="status" aria-hidden="true"></span>
                         <span id="filterText">{{ __('Filter') }}</span>
                     </button>
@@ -51,15 +137,23 @@
     </div>
 </div>
 
-<div class="card border-0 shadow-sm rounded-3 overflow-hidden">
+<div class="card border-0 rounded-4 overflow-hidden" style="border: 1px solid var(--border-color) !important; box-shadow: var(--shadow-global);">
     <div class="card-body p-0" id="tableContainer">
         <div class="table-responsive">
             <table class="table table-hover align-middle text-sm mb-0">
                 <style>
                     .custom-thead th {
-                        background-color: var(--primary-navy) !important;
-                        color: white !important;
-                        border-bottom: none !important;
+                        background-color: var(--surface-color) !important;
+                        color: var(--text-primary) !important;
+                        border-bottom: 2px solid var(--border-color) !important;
+                        text-transform: uppercase;
+                        letter-spacing: 0.5px;
+                        font-size: 0.75rem;
+                        padding-top: 16px !important;
+                        padding-bottom: 16px !important;
+                    }
+                    .table-hover tbody tr:hover {
+                        background-color: rgba(37, 99, 235, 0.02) !important;
                     }
                 </style>
                 <thead class="custom-thead" style="font-size: 0.85rem;">
@@ -94,7 +188,7 @@
                                 $mon = $shipment->monitoring;
                                 $statusColor = $mon['current_status'] === 'Delayed' ? 'warning' : ($mon['current_status'] === 'At Risk' ? 'danger' : 'success');
                                 $levelColor = $mon['risk_level'] === 'Critical' ? 'danger' : ($mon['risk_level'] === 'High' ? 'warning' : ($mon['risk_level'] === 'Medium' ? 'info' : 'success'));
-                                $eta = $shipment->estimated_arrival ? \Carbon\Carbon::parse($shipment->estimated_arrival)->diffForHumans() : 'N/A';
+                                $eta = $shipment->estimated_arrival ? \Carbon\Carbon::parse($shipment->estimated_arrival)->format('d M Y') : 'N/A';
                             @endphp
                             <tr>
                                 <td class="ps-4 py-3 fw-bold text-primary">{{ $shipment->shipment_code }}</td>
@@ -112,17 +206,17 @@
                                 <td class="py-3"><span class="badge bg-light-{{ $statusColor }} text-{{ $statusColor }} px-2 py-1">{{ __($mon['current_status']) }}</span></td>
                                 <td class="py-3 text-muted" style="font-size:0.8rem">{{ \Carbon\Carbon::parse($mon['last_updated'])->format('d M Y H:i') }}</td>
                                 <td class="pe-4 py-3 text-end">
-                                    <div class="d-flex gap-1 justify-content-end">
-                                        <a href="{{ route('user.shipments.show', $shipment->id) }}" class="btn btn-sm btn-light text-primary border" title="Monitor">
+                                    <div class="d-flex gap-2 justify-content-end">
+                                        <a href="{{ route('user.shipments.show', $shipment->id) }}" class="btn-action btn-action-text action-view" title="Monitor">
                                             <i class="bi bi-eye"></i> {{ __('Monitor') }}
                                         </a>
-                                        <a href="{{ route('user.shipments.edit', $shipment->id) }}" class="btn btn-sm btn-light text-warning border" title="Edit">
+                                        <a href="{{ route('user.shipments.edit', $shipment->id) }}" class="btn-action action-edit" title="Edit">
                                             <i class="bi bi-pencil"></i>
                                         </a>
                                         <form action="{{ route('user.shipments.destroy', $shipment->id) }}" method="POST" class="d-inline" onsubmit="return confirm('{{ __('Are you sure you want to delete this shipment?') }}');">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-light text-danger border" title="Delete">
+                                            <button type="submit" class="btn-action action-delete" title="Delete">
                                                 <i class="bi bi-trash"></i>
                                             </button>
                                         </form>

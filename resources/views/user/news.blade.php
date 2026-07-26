@@ -5,23 +5,23 @@
 @section('content')
 <div class="container-fluid pb-5 bg-white rounded-4" style="min-height: 100vh; padding-top: 20px;">
     <!-- Header Section -->
-    <div class="header-hero-section position-relative overflow-hidden mb-4" style="background: linear-gradient(135deg, #EFF6FF 0%, #F8FBFF 55%, #FFFFFF 100%); border: 1px solid #E5E7EB; border-radius: 24px; box-shadow: 0 10px 30px rgba(37,99,235,.08); padding: 40px 48px;">
+    <div class="header-hero-section position-relative overflow-hidden mb-4" style="background: linear-gradient(135deg, var(--primary) 0%, #3B82F6 100%); border-radius: var(--radius-card); box-shadow: var(--shadow-global); padding: 40px 48px;">
         <!-- Transparent Pattern Decor -->
-        <div class="position-absolute top-0 end-0 h-100" style="width: 40%; background-image: radial-gradient(#2563EB 1.5px, transparent 1.5px); background-size: 20px 20px; opacity: 0.05; pointer-events: none;"></div>
+        <div class="position-absolute top-0 end-0 h-100" style="width: 40%; background-image: radial-gradient(#ffffff 1.5px, transparent 1.5px); background-size: 20px 20px; opacity: 0.1; pointer-events: none;"></div>
 
         <div class="row align-items-center position-relative z-1">
             <!-- Kiri (70%) -->
             <div class="col-lg-8 mb-4 mb-lg-0">
-                <h2 class="fw-bolder mb-2 text-dark" style="letter-spacing: -0.5px;">{{ __('Intelijen Berita Global') }}</h2>
-                <p class="text-muted mb-3 fs-6" style="max-width: 600px;">{{ __('Pusat pemantauan berita terkini untuk sektor logistik, perdagangan, dan maritim dunia.') }}</p>
-                <span class="badge rounded-pill fw-semibold text-primary px-3 py-2" style="background-color: rgba(37, 99, 235, 0.1); font-size: 0.8rem;">
+                <h2 class="fw-bolder mb-2 text-white" style="letter-spacing: -0.5px;">{{ __('Intelijen Berita Global') }}</h2>
+                <p class="text-white-50 mb-3 fs-6" style="max-width: 600px;">{{ __('Pusat pemantauan berita terkini untuk sektor logistik, perdagangan, dan maritim dunia.') }}</p>
+                <span class="badge rounded-pill fw-semibold bg-white text-primary px-3 py-2" style="font-size: 0.8rem;">
                     🌐 {{ __('Global Monitoring') }}
                 </span>
             </div>
             
             <!-- Kanan (30%) -->
             <div class="col-lg-4 d-flex justify-content-lg-end">
-                <div class="d-flex align-items-center gap-4 bg-white p-3 rounded-4 shadow-sm border" style="border-color: #F3F4F6 !important;">
+                <div class="d-flex align-items-center gap-4 bg-white p-3 rounded-4 shadow-sm border" style="border-color: var(--border-color) !important; border-radius: var(--radius-card) !important;">
                     <div>
                         <span class="d-block text-muted fw-semibold mb-1" style="font-size: 0.8rem;">{{ __('Total Berita') }}</span>
                         <h2 class="fw-bold text-primary mb-2 lh-1" style="font-size: 38px;" id="totalNewsCount">{{ $categoryStats['total'] }}</h2>
@@ -41,7 +41,7 @@
 
     <!-- Filter Toolbar -->
     <div class="px-4 mb-4">
-        <form id="newsFilterForm" class="bg-white p-3 shadow-sm border" style="border-color: #E5E7EB !important; border-radius: 16px;">
+        <form id="newsFilterForm" class="bg-white p-3 shadow-sm border" style="border-color: var(--border-color) !important; border-radius: var(--radius-card); box-shadow: var(--shadow-global) !important;">
             <div class="row g-3 align-items-center">
                 <!-- Search -->
                 <div class="col-12 col-md-4 col-lg-5">
@@ -106,7 +106,7 @@
                 </h5>
 
                 <!-- AI Insight Card -->
-                <div class="card bg-white border-0 shadow-sm rounded-4 mb-4" style="border: 1px solid #E5E7EB !important; box-shadow: 0 4px 6px rgba(0,0,0,0.02) !important;">
+                <div class="card bg-white border-0 shadow-sm rounded-4 mb-4" style="border: 1px solid var(--border-color) !important; border-radius: var(--radius-card) !important; box-shadow: var(--shadow-global) !important;">
                     <div class="card-body p-4">
                         <div class="d-flex align-items-center gap-3 mb-4 pb-3 border-bottom" style="border-bottom-color: #F3F4F6 !important;">
                             <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 42px; height: 42px;">
@@ -135,7 +135,7 @@
                 </div>
 
                 <!-- Top Categories -->
-                <div class="card bg-white border-0 shadow-sm rounded-4" style="border: 1px solid #E5E7EB !important; box-shadow: 0 4px 6px rgba(0,0,0,0.02) !important;">
+                <div class="card bg-white border-0 shadow-sm rounded-4" style="border: 1px solid var(--border-color) !important; border-radius: var(--radius-card) !important; box-shadow: var(--shadow-global) !important;">
                     <div class="card-body p-4">
                         <div class="d-flex align-items-center gap-2 mb-4">
                             <i class="bi bi-pie-chart text-muted"></i>
@@ -324,15 +324,15 @@ function updateCharts(sentStats) {
 @keyframes spin { 100% { transform: rotate(360deg); } }
 
 .btn-sync {
-    background-color: #2563EB !important;
-    border-color: #2563EB !important;
+    background-color: var(--primary) !important;
+    border-color: var(--primary) !important;
     color: #ffffff !important;
     opacity: 1 !important;
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition: all var(--transition-speed) cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 .btn-sync:hover {
-    background-color: #1d4ed8 !important;
-    border-color: #1d4ed8 !important;
+    background-color: var(--primary-hover) !important;
+    border-color: var(--primary-hover) !important;
     transform: translateY(-3px);
     box-shadow: 0 8px 20px rgba(37,99,235,0.2) !important;
 }

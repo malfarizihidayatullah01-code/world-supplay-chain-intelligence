@@ -1,390 +1,332 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-theme="forest">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ config('app.name', 'GSC Risk Intelligence') }}</title>
+    <title>{{ config('app.name', 'GSC Risk Intelligence') }} - Admin Portal</title>
+    
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <!-- Leaflet CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <!-- Flag Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.0.0/css/flag-icons.min.css"/>
+    
+    <!-- Custom CSS -->
+    <link href="{{ asset('css/admin.css') }}" rel="stylesheet">
+    
+    @stack('styles')
+    
     <style>
-        :root {
-            --primary: #4A7A44; /* Forest green from image */
-            --primary-hover: #3C6337;
-            --primary-soft: #E9F1E2; /* Very soft pistachio for accent backgrounds */
-            --bg-light: #F9FBF6; /* Soft warm eco-friendly cream */
-            --text-dark: #1E2D1D; /* Deep earthy green-black */
-            --text-muted: #6B7A68;
-            --card-border-radius: 24px;
-            --transition-speed: 0.3s;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-light);
-            color: var(--text-dark);
-            overflow-x: hidden;
-        }
-
-        /* Override Bootstrap Primary to Eco-Friendly Green */
-        .bg-primary { background-color: var(--primary) !important; }
-        .text-primary { color: var(--primary) !important; }
-        .btn-primary { background-color: var(--primary) !important; border-color: var(--primary) !important; border-radius: 50px; padding: 10px 24px; font-weight: 600; }
-        .btn-primary:hover { background-color: var(--primary-hover) !important; border-color: var(--primary-hover) !important; }
-        
-        .bg-primary.bg-opacity-10 { background-color: var(--primary-soft) !important; opacity: 1 !important; }
-        
-        /* Navbar specific styling */
-        .top-header { background-color: var(--bg-light); }
-        
-        /* Global Card Styling (Eco-Friendly Vibe) */
-        .card {
-            border-radius: var(--card-border-radius) !important;
-            border: none !important;
-            box-shadow: 0 8px 24px rgba(60, 99, 55, 0.04) !important;
+        /* Specific Layout structure for Sidebar & Navbar */
+        .app-container {
+            display: flex;
+            min-height: 100vh;
         }
         
-        /* Badges & Pills */
-        .badge {
-            border-radius: 50px !important;
-            padding: 0.5em 1em !important;
-            font-weight: 600;
+        .sidebar {
+            width: var(--admin-sidebar-width);
+            background-color: var(--sidebar, #13212E);
+            color: var(--sidebar-text, #FFFFFF);
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            border-top-right-radius: 20px;
+            border-bottom-right-radius: 20px;
+            z-index: 1040;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease;
         }
-
-        /* Enterprise Top Navbar Layout */
-        .top-header-wrapper {
-            padding: 16px 24px 0 24px;
-        }
-        .top-header {
-            background-color: #ffffff;
-            border-radius: 24px;
+        
+        .main-wrapper {
+            flex: 1;
+            margin-left: var(--admin-sidebar-width);
             padding: 24px;
             display: flex;
             flex-direction: column;
-            gap: 16px;
-            position: relative;
-            z-index: 1000;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.02);
-            border-bottom: 1px solid rgba(0,0,0,0.05);
+            min-height: 100vh;
         }
-
-        .top-header-main {
+        
+        /* Sidebar branding */
+        .sidebar-brand {
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: white;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        
+        /* Sidebar Links */
+        .sidebar-nav {
+            padding: 24px 12px;
+            flex: 1;
+            overflow-y: auto;
+        }
+        
+        .nav-link-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        .nav-link-item:hover {
+            color: white;
+            background-color: var(--sidebar-hover, #1E3140);
+        }
+        
+        .nav-link-item.active {
+            color: white;
+            background: linear-gradient(90deg, var(--primary, #2F7A68), var(--secondary, #56C5A8));
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        /* Floating Navbar */
+        .floating-navbar {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 16px 24px;
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
-        }
-
-        .header-title-section {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .header-title {
-            font-size: 32px;
-            font-weight: bold;
-            color: #111827;
-            margin: 0;
-            letter-spacing: -0.5px;
-        }
-
-        .header-subtitle {
-            font-size: 15px;
-            color: #64748B;
-            margin: 0;
-        }
-
-        .header-actions {
-            display: flex;
             align-items: center;
-            gap: 16px;
-        }
-
-        /* Sync Button */
-        .btn-sync {
-            height: 34px;
-            padding: 4px 14px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            color: #6b7280;
-            border: 1px solid #d1d5db !important;
-            background-color: transparent !important;
-            transition: all 0.2s;
-            text-decoration: none;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+            border: 1px solid var(--border, #E5E7EB);
+            margin-bottom: 32px;
+            position: relative;
+            z-index: 1030;
         }
         
-        .btn-sync:hover {
-            background-color: #2563EB !important;
-            color: #ffffff !important;
-            border-color: #2563EB !important;
-        }
-
-        /* DateTime */
-        .header-datetime {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 13px;
-            color: #6b7280;
-            font-weight: 500;
-        }
-
-        /* Nav Container */
-        .nav-pills-container {
-            display: flex;
-            overflow-x: auto;
-            width: 100%;
-        }
-        
-        .nav-pills-container::-webkit-scrollbar { display: none; }
-
-        .nav-item-link {
-            color: #64748B;
-            font-weight: 500;
-            font-size: 15px;
-            padding: 8px 16px;
-            border-radius: 50px;
-            text-decoration: none;
-            transition: all 0.2s;
-            white-space: nowrap;
-        }
-
-        .nav-item-link:hover {
-            color: #2563EB;
-            background-color: #eff6ff;
-        }
-
-        .nav-item-link.active {
-            background-color: #2563EB;
-            color: #ffffff;
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
-        }
-
-        /* Profile */
+        /* User Profile Pill */
         .profile-pill {
-            background-color: #ffffff;
-            border-radius: 50px;
-            padding: 4px 12px 4px 4px;
             display: flex;
             align-items: center;
             gap: 10px;
-            border: 1px solid #f3f4f6;
             cursor: pointer;
-            transition: all 0.2s;
+            padding: 6px 12px;
+            border-radius: 50px;
+            background-color: var(--background, #F4F7FB);
+            border: 1px solid var(--border, #E5E7EB);
+            transition: all 0.2s ease;
         }
-        
         .profile-pill:hover {
-            background-color: #f9fafb;
-            border-color: #e5e7eb;
+            background-color: #e5e7eb;
         }
-
         .profile-pill img {
             width: 32px;
             height: 32px;
             border-radius: 50%;
         }
 
-        .profile-info {
-            display: flex;
-            flex-direction: column;
-            text-align: left;
-            line-height: 1.2;
-        }
-
-        /* Main Content Area */
-        #main-content {
-            min-height: calc(100vh - 100px);
-            display: flex;
-            flex-direction: column;
-            transition: all var(--transition-speed);
-        }
-
-        /* Card Styles */
-        .card {
-            border: none;
-            border-radius: 20px; /* More rounded */
-            box-shadow: 0 4px 20px rgba(0,0,0,0.02);
-            margin-bottom: 24px;
-            transition: transform var(--transition-speed), box-shadow var(--transition-speed);
-            background-color: #ffffff;
+        /* Mobile */
+        @media (max-width: 991.98px) {
+            .sidebar {
+                transform: translateX(-100%);
+                border-radius: 0;
+            }
+            .sidebar.show {
+                transform: translateX(0);
+            }
+            .main-wrapper {
+                margin-left: 0;
+                padding: 16px;
+            }
+            .floating-navbar {
+                top: 16px;
+                margin-bottom: 24px;
         }
         
-        .card-header {
-            background-color: transparent;
-            border-bottom: 1px solid #f3f4f6;
-            padding: 16px 20px;
-            font-weight: 600;
-            border-radius: 20px 20px 0 0 !important;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        @keyframes ping {
+            75%, 100% { transform: scale(2.5); opacity: 0; }
         }
-        
-        /* Utility */
-        .bg-lime-soft { background-color: rgba(221, 247, 102, 0.4); color: #4a5c00; }
-        .text-lime { color: #8bbd00; }
-        
-        .empty-state {
-            padding: 40px 20px;
-            text-align: center;
-            color: #888;
-        }
-        .empty-state i { font-size: 2.5rem; color: #ddd; margin-bottom: 10px; }
     </style>
-    @stack('styles')
 </head>
-<body style="background: linear-gradient(to right bottom, #e0e6ed, #f4f6f8); min-height: 100vh;">
-
+<body>
     @guest
-        <!-- Simple Layout for Guest/Auth -->
-        <div class="container-fluid py-4">
-            @if(session('status'))
-                <div class="alert alert-success">{{ session('status') }}</div>
-            @endif
-            @yield('content')
-        </div>
+        @yield('content')
     @else
-        <!-- SaaS Layout (Centered Pill Navbar) -->
-        <div class="top-header-wrapper d-none d-lg-block">
-            <header class="top-header">
-                <div class="top-header-main">
-                    <!-- Left: Title & Subtitle -->
-                    <div class="header-title-section">
-                        <h1 class="header-title">{{ __('Global Supply Chain Monitoring') }}</h1>
-                        <p class="header-subtitle">{{ __('Real-time monitoring of logistics, weather, economy, trade, and supply chain risks.') }}</p>
+    <div class="app-container">
+        
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <a href="{{ route('admin.dashboard') }}" class="sidebar-brand">
+                <i data-lucide="shield-alert" style="color: var(--secondary, #56C5A8)"></i>
+                Admin Panel
+            </a>
+            
+            <nav class="sidebar-nav">
+                <div class="text-uppercase mb-3 px-3" style="font-size: 0.75rem; color: rgba(255,255,255,0.4); font-weight: 600; letter-spacing: 1px;">{{ __('Administration') }}</div>
+                
+                <a href="{{ route('admin.dashboard') }}" class="nav-link-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                    <i data-lucide="layout-dashboard"></i> {{ __('Overview') }}
+                </a>
+                <a href="{{ route('admin.users.index') }}" class="nav-link-item {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
+                    <i data-lucide="users"></i> {{ __('Users') }}
+                </a>
+                <a href="{{ route('admin.ports.index') }}" class="nav-link-item {{ request()->routeIs('admin.ports.*') ? 'active' : '' }}">
+                    <i data-lucide="anchor"></i> {{ __('Ports DB') }}
+                </a>
+                <a href="{{ route('admin.articles.index') }}" class="nav-link-item {{ request()->routeIs('admin.articles.*') ? 'active' : '' }}">
+                    <i data-lucide="file-text"></i> {{ __('Articles Management') }}
+                </a>
+                <a href="#" onclick="alert('Sinkronisasi data sedang berjalan di latar belakang...'); return false;" class="nav-link-item">
+                    <i data-lucide="refresh-cw"></i> {{ __('Sync Database') }}
+                </a>
+            </nav>
+            
+            <!-- Sidebar Footer -->
+            <div class="p-4 border-top" style="border-color: rgba(255,255,255,0.05) !important;">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center gap-3 overflow-hidden">
+                        <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=2563EB&color=ffffff" alt="Admin" class="rounded-circle flex-shrink-0" style="width: 36px; height: 36px;">
+                        <div class="overflow-hidden">
+                            <div class="text-white fw-semibold text-truncate" style="font-size: 0.85rem; line-height: 1.2;">{{ Auth::user()->name }}</div>
+                            <div class="text-truncate" style="font-size: 0.75rem; color: rgba(255,255,255,0.5); text-transform: capitalize;">{{ Auth::user()->role ?? 'Admin' }}</div>
+                        </div>
                     </div>
-
-                    <!-- Right: Actions -->
-                    <div class="header-actions">
-                        <button class="btn btn-outline-secondary btn-sm btn-sync" onclick="location.reload()">
-                            <i class="bi bi-arrow-repeat"></i> {{ __('Sync All') }}
+                    <form action="{{ route('logout') }}" method="POST" class="m-0 flex-shrink-0 ms-2">
+                        @csrf
+                        <button type="submit" class="btn btn-link p-2 m-0 text-white d-flex align-items-center justify-content-center" title="{{ __('Logout') }}" style="background: rgba(255, 255, 255, 0.1); border-radius: 8px; text-decoration: none; border: 1px solid rgba(255, 255, 255, 0.15); transition: all 0.2s;">
+                            <i data-lucide="log-out" style="width: 18px; height: 18px;"></i>
                         </button>
-                        
-                        <div class="header-datetime">
-                            <i class="bi bi-calendar3"></i> {{ \Carbon\Carbon::now()->timezone('Asia/Jakarta')->format('d M Y • H:i') }} WIB
-                        </div>
+                    </form>
+                </div>
+            </div>
+        </aside>
 
-                        <!-- Language Switcher -->
-                        <div class="dropdown">
-                            <button class="btn btn-sm btn-light rounded-pill px-3 d-flex align-items-center gap-2 border shadow-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: white;">
-                                <i class="bi bi-translate text-primary"></i>
-                                <span class="fw-bold text-dark" style="font-size: 0.8rem;">{{ session('locale', config('app.locale')) == 'id' ? 'ID' : 'EN' }}</span>
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end border-0 shadow-sm rounded-4 mt-2" style="min-width: 120px;">
-                                <li>
-                                    <a class="dropdown-item d-flex align-items-center gap-2 py-2 {{ session('locale', config('app.locale')) == 'id' ? 'active bg-primary text-white rounded-3 mx-1' : '' }}" href="{{ route('lang.switch', 'id') }}">
-                                        <span class="fi fi-id rounded-circle shadow-sm" style="font-size: 1.2rem;"></span>
-                                        <span style="font-size: 0.85rem;" class="fw-semibold">Indonesia</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item d-flex align-items-center gap-2 py-2 {{ session('locale', config('app.locale')) == 'en' ? 'active bg-primary text-white rounded-3 mx-1 mt-1' : 'mt-1' }}" href="{{ route('lang.switch', 'en') }}">
-                                        <span class="fi fi-us rounded-circle shadow-sm" style="font-size: 1.2rem;"></span>
-                                        <span style="font-size: 0.85rem;" class="fw-semibold">English</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div class="dropdown">
-                            <div class="profile-pill" data-bs-toggle="dropdown" aria-expanded="false">
-                                <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=F3F4F6&color=111827" alt="User">
-                                <div class="profile-info d-none d-xl-flex">
-                                    <span class="fw-bold text-dark" style="font-size: 0.8rem;">{{ Auth::user()->name }}</span>
-                                    <span class="text-muted" style="font-size: 0.7rem; text-transform: capitalize;">{{ Auth::user()->role }}</span>
-                                </div>
-                            </div>
-                            <ul class="dropdown-menu dropdown-menu-end border-0 shadow-sm rounded-4 mt-2" style="min-width: 150px;">
-                                <li>
-                                    <form action="{{ route('logout') }}" method="POST" class="m-0">
-                                        @csrf
-                                        <button type="submit" class="dropdown-item d-flex align-items-center gap-2 text-danger py-2">
-                                            <i class="bi bi-box-arrow-right"></i> Logout
-                                        </button>
-                                    </form>
-                                </li>
-                            </ul>
-                        </div>
+        <!-- Main Wrapper -->
+        <div class="main-wrapper">
+            
+            <!-- Floating Navbar -->
+            <nav class="floating-navbar fade-in-up">
+                <div class="d-flex align-items-center gap-3">
+                    <button class="btn btn-light d-lg-none border-0" id="mobileMenuToggle">
+                        <i data-lucide="menu"></i>
+                    </button>
+                    <!-- Search Box -->
+                    <div class="input-group d-none d-md-flex" style="width: 300px; background: var(--background, #F4F7FB); border-radius: 50px; padding: 4px 16px; border: 1px solid var(--border, #E5E7EB);">
+                        <i data-lucide="search" style="width: 18px; color: var(--text-muted, #6B7280); margin-top: 6px;"></i>
+                        <input type="text" class="form-control border-0 bg-transparent shadow-none" placeholder="Search operations...">
                     </div>
                 </div>
+                
+                <div class="d-flex align-items-center gap-4">
+                    <!-- Modern Live Date & Time -->
+                    <div class="d-none d-md-flex align-items-center gap-3 bg-white px-3 py-1 rounded-pill shadow-sm border" style="background: var(--card, #FFFFFF) !important; border-color: var(--border, #E5E7EB) !important;">
+                        <!-- Pulsing Dot -->
+                        <div class="position-relative d-flex align-items-center justify-content-center" style="width: 12px; height: 12px;">
+                            <span class="position-absolute rounded-circle bg-success opacity-50" style="width: 100%; height: 100%; animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;"></span>
+                            <span class="position-relative rounded-circle bg-success" style="width: 6px; height: 6px;"></span>
+                        </div>
+                        
+                        <!-- Date -->
+                        <div class="d-flex align-items-center text-muted" style="font-size: 0.75rem; font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase;">
+                            {{ now()->format('d M Y') }}
+                        </div>
+                        
+                        <div class="vr" style="opacity: 0.1; height: 16px; margin-top: auto; margin-bottom: auto;"></div>
+                        
+                        <!-- Time -->
+                        <div class="d-flex align-items-center gap-1" style="font-size: 0.85rem; font-weight: 700; color: #0F172A; font-family: monospace;">
+                            <span id="liveTime">{{ now()->format('H:i:s') }}</span>
+                            <span class="text-muted ms-1" style="font-size: 0.65rem; font-weight: 600;">WIB</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Theme Switcher (using theme.js) -->
+                    <div class="dropdown">
+                        <button class="btn btn-light rounded-circle p-2 border-0" data-bs-toggle="dropdown">
+                            <i data-lucide="palette" style="width: 20px;"></i>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end border-0 shadow rounded-4 mt-2">
+                            <li><h6 class="dropdown-header">Select Theme</h6></li>
+                            <li><button class="dropdown-item d-flex align-items-center gap-2 theme-btn" data-theme="forest"><span class="rounded-circle" style="width:12px; height:12px; background:#2F7A68;"></span> Forest (Default)</button></li>
+                            <li><button class="dropdown-item d-flex align-items-center gap-2 theme-btn" data-theme="ocean"><span class="rounded-circle" style="width:12px; height:12px; background:#0284C7;"></span> Ocean</button></li>
+                            <li><button class="dropdown-item d-flex align-items-center gap-2 theme-btn" data-theme="purple"><span class="rounded-circle" style="width:12px; height:12px; background:#7C3AED;"></span> Purple</button></li>
+                            <li><button class="dropdown-item d-flex align-items-center gap-2 theme-btn" data-theme="sunset"><span class="rounded-circle" style="width:12px; height:12px; background:#EA580C;"></span> Sunset</button></li>
+                            <li><button class="dropdown-item d-flex align-items-center gap-2 theme-btn" data-theme="emerald"><span class="rounded-circle" style="width:12px; height:12px; background:#059669;"></span> Emerald</button></li>
+                            <li><button class="dropdown-item d-flex align-items-center gap-2 theme-btn" data-theme="midnight"><span class="rounded-circle" style="width:12px; height:12px; background:#4F46E5;"></span> Midnight</button></li>
+                        </ul>
+                    </div>
 
-                <!-- Bottom: Nav Pills -->
-                <div class="nav-pills-container justify-content-center align-items-center gap-4">
-                    @if(Auth::user()->role === 'admin')
-                        <a href="{{ route('admin.dashboard') }}" class="nav-item-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">{{ __('Dashboard') }}</a>
-                        <a href="{{ route('admin.users.index') }}" class="nav-item-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">{{ __('Users') }}</a>
-                        <a href="{{ route('admin.ports.index') }}" class="nav-item-link {{ request()->routeIs('admin.ports.*') ? 'active' : '' }}">{{ __('Ports') }}</a>
-                        <a href="{{ route('admin.articles.index') }}" class="nav-item-link {{ request()->routeIs('admin.articles.*') ? 'active' : '' }}">{{ __('Articles') }}</a>
-                    @else
-                        <a href="{{ route('user.dashboard') }}" class="nav-item-link {{ request()->routeIs('user.dashboard') ? 'active' : '' }}">{{ __('Dashboard') }}</a>
-                        <a href="{{ route('user.countries.index') }}" class="nav-item-link {{ request()->routeIs('user.country') || request()->routeIs('user.countries.index') ? 'active' : '' }}">{{ __('Countries') }}</a>
-                        <a href="{{ route('user.weather') }}" class="nav-item-link {{ request()->routeIs('user.weather') ? 'active' : '' }}">{{ __('Weather') }}</a>
-                        <a href="{{ route('user.currency') }}" class="nav-item-link {{ request()->routeIs('user.currency') ? 'active' : '' }}">{{ __('Currency') }}</a>
-                        <a href="{{ route('user.news') }}" class="nav-item-link {{ request()->routeIs('user.news') ? 'active' : '' }}">{{ __('News') }}</a>
-                        <a href="{{ route('user.ports.index') }}" class="nav-item-link {{ request()->routeIs('user.ports.*') ? 'active' : '' }}">{{ __('Ports') }}</a>
-                        <a href="{{ route('user.comparison') }}" class="nav-item-link {{ request()->routeIs('user.comparison') ? 'active' : '' }}">{{ __('Compare') }}</a>
-                        <a href="{{ route('user.shipments.index') }}" class="nav-item-link {{ request()->routeIs('user.shipments.*') ? 'active' : '' }}">{{ __('Shipments') }}</a>
-                        <a href="{{ route('user.watchlist.index') }}" class="nav-item-link {{ request()->routeIs('user.watchlist.index') ? 'active' : '' }}">{{ __('Favorites') }}</a>
-                    @endif
+                    <!-- Language Switcher -->
+                    <div class="dropdown">
+                        <button class="btn btn-light rounded-pill px-3 d-flex align-items-center gap-2 border-0 shadow-sm" data-bs-toggle="dropdown" aria-expanded="false" style="font-weight: 600; font-size: 0.85rem;">
+                            <i data-lucide="languages" style="width: 16px; height: 16px;"></i>
+                            {{ App::getLocale() == 'id' ? 'ID' : 'ENG' }}
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end border-0 shadow-sm rounded-4 mt-2">
+                            <li>
+                                <a href="{{ route('lang.switch', 'id') }}" class="dropdown-item d-flex align-items-center gap-2 {{ App::getLocale() == 'id' ? 'active bg-primary text-white' : '' }}">
+                                    <i data-lucide="check" style="width: 14px; {{ App::getLocale() == 'id' ? '' : 'visibility: hidden;' }}"></i> Bahasa Indonesia
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('lang.switch', 'en') }}" class="dropdown-item d-flex align-items-center gap-2 {{ App::getLocale() == 'en' ? 'active bg-primary text-white' : '' }}">
+                                    <i data-lucide="check" style="width: 14px; {{ App::getLocale() == 'en' ? '' : 'visibility: hidden;' }}"></i> English
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-            </header>
-        </div>
+            </nav>
 
-        <!-- Mobile Navbar (Fallback) -->
-        <nav class="navbar navbar-expand-lg bg-white d-flex d-lg-none px-3 shadow-sm">
-            <a class="navbar-brand fw-bold" href="#">GSC Risk</a>
-            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#mobileMenu">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="mobileMenu">
-                <ul class="navbar-nav mt-2 gap-1">
-                    <li class="nav-item"><a class="nav-link" href="{{ route('user.dashboard') }}">Dashboard</a></li>
-                    <!-- Add more mobile links if needed -->
-                    <li class="nav-item mt-2">
-                        <form action="{{ route('logout') }}" method="POST" class="m-0">
-                            @csrf
-                            <button type="submit" class="btn btn-danger btn-sm w-100">Logout</button>
-                        </form>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-
-        <!-- Main Content -->
-        <div id="main-content">
             <!-- Page Content -->
-            <div class="container-fluid px-4 pb-4 pt-1" style="max-width: 1700px; margin: 0 auto;">
+            <main class="flex-grow-1 fade-in-up delay-100">
                 @if(session('status'))
-                    <div class="alert alert-success border-0 shadow-sm rounded-3">{{ session('status') }}</div>
+                    <div class="alert alert-success border-0 shadow-sm rounded-4 mb-4">
+                        <i data-lucide="check-circle" style="width: 18px; margin-right: 8px; margin-bottom: 2px;"></i>
+                        {{ session('status') }}
+                    </div>
                 @endif
+                
                 @yield('content')
-            </div>
+            </main>
+            
         </div>
+    </div>
     @endguest
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Theme System JS -->
+    <script src="{{ asset('js/theme.js') }}"></script>
+    
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Optional global scripts
+        // Initialize Lucide Icons
+        lucide.createIcons();
+    </script>
+    <script>
+        // Live ticking clock
+        setInterval(function() {
+            var date = new Date();
+            var hours = String(date.getHours()).padStart(2, '0');
+            var minutes = String(date.getMinutes()).padStart(2, '0');
+            var seconds = String(date.getSeconds()).padStart(2, '0');
+            var timeEl = document.getElementById('liveTime');
+            if(timeEl) timeEl.innerText = hours + ':' + minutes + ':' + seconds;
+        }, 1000);
+        
+        // Mobile menu toggle
+        document.getElementById('mobileMenuToggle')?.addEventListener('click', function() {
+            document.getElementById('sidebar').classList.toggle('show');
         });
     </script>
+    
     @stack('scripts')
 </body>
 </html>
-
-
-

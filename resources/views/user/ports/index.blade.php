@@ -62,7 +62,7 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
 <style>
-    .ports-page-wrapper { padding: 24px; }
+    .ports-page-wrapper { padding: 24px 0; }
 
     .ports-layout {
         display: flex;

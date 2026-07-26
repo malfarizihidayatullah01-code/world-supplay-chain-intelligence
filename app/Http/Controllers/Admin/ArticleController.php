@@ -87,11 +87,18 @@ class ArticleController extends Controller
         if ($request->tags) {
             $tagsArray = array_map('trim', explode(',', $request->tags));
         }
+        
+        $slug = \Illuminate\Support\Str::slug($request->title);
+        $originalSlug = $slug;
+        $counter = 1;
+        while (Article::where('slug', $slug)->exists()) {
+            $slug = $originalSlug . '-' . $counter++;
+        }
 
         Article::create([
             'admin_id' => auth()->id(),
             'title' => $request->title,
-            'slug' => \Illuminate\Support\Str::slug($request->title),
+            'slug' => $slug,
             'category' => $request->category,
             'image' => $request->image,
             'tags' => $tagsArray,
@@ -122,9 +129,16 @@ class ArticleController extends Controller
             $tagsArray = array_map('trim', explode(',', $request->tags));
         }
 
+        $slug = \Illuminate\Support\Str::slug($request->title);
+        $originalSlug = $slug;
+        $counter = 1;
+        while (Article::where('slug', $slug)->where('id', '!=', $article->id)->exists()) {
+            $slug = $originalSlug . '-' . $counter++;
+        }
+
         $article->update([
             'title' => $request->title,
-            'slug' => \Illuminate\Support\Str::slug($request->title),
+            'slug' => $slug,
             'category' => $request->category,
             'image' => $request->image,
             'tags' => $tagsArray,

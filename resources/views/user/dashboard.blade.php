@@ -1,17 +1,8 @@
-﻿@extends('layouts.app')
+@extends('layouts.app')
 @section('content')
-<div class="container-fluid py-4">
+<div class="py-2">
     <!-- Header Area is handled by layouts.app top-navbar, but we add our title here -->
-    <div class="d-flex justify-content-end align-items-end mb-3">
-        <div class="d-none d-md-flex align-items-center gap-2">
-            <!-- Sync Time Indicator -->
-            <div class="bg-white rounded px-3 py-2 shadow-sm d-flex align-items-center gap-2 border" style="font-size: 0.75rem;">
-                <i class="bi bi-calendar3 text-muted"></i>
-                <span id="dashboard-time-indicator" class="fw-semibold text-dark">{{ now()->format('d M Y, H:i') }} WIB</span>
-                <i class="bi bi-arrow-repeat text-muted ms-2" style="cursor:pointer;" onclick="fetchDashboardData()" title="Force Sync"></i>
-            </div>
-        </div>
-    </div>
+
 
 <!-- ROW 1: Global Risk Map -->
     <div class="row g-4 mb-4">
@@ -20,7 +11,6 @@
             <div class="card border-0 shadow-sm rounded-4 h-100">
                 <div class="card-header bg-white border-0 py-3 d-flex justify-content-between align-items-center">
                     <h6 class="fw-bold mb-0 text-dark">{{ __('Global Supply Chain Risk Map') }} <i class="bi bi-info-circle text-muted ms-1" style="font-size: 0.8rem;"></i></h6>
-                    <a href="{{ route('user.countries.index') }}" class="btn btn-sm btn-primary rounded-pill px-3">{{ __('View Full Map') }}</a>
                 </div>
                 <div class="card-body p-0 position-relative">
                     <div id="worldMap" style="height: 500px; width: 100%;" class="rounded-bottom-4"></div>
@@ -40,156 +30,108 @@
     </div>
 
 <!-- ROW 2: Summary Cards -->
-    <style>
-        .summary-card-modern {
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            color: #fff;
-            position: relative;
-            overflow: hidden;
-            border: none;
-        }
-        .summary-card-modern::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0));
-            z-index: 1;
-        }
-        .summary-card-modern:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.2) !important;
-        }
-        .summary-card-modern .card-body {
-            position: relative;
-            z-index: 2;
-        }
-        .summary-card-modern .text-muted { color: rgba(255,255,255,0.85) !important; }
-        .summary-card-modern .text-dark { color: #fff !important; }
-        .summary-card-modern .icon-box {
-            background: rgba(255, 255, 255, 0.25) !important;
-            color: #fff !important;
-            backdrop-filter: blur(5px);
-        }
-        
-        .grad-blue { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
-        .grad-red { background: linear-gradient(135deg, #ff0844 0%, #ffb199 100%); }
-        .grad-teal { background: linear-gradient(135deg, #00c6fb 0%, #005bea 100%); }
-        .grad-green { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
-        .grad-orange { background: linear-gradient(135deg, #f12711 0%, #f5af19 100%); }
-    </style>
-
     <div class="row row-cols-1 row-cols-md-3 row-cols-xl-5 g-4 mb-4" id="summary-container">
         <!-- 1. Countries Monitored -->
         <div class="col">
-            <div class="card h-100 shadow-sm rounded-4 summary-card-modern grad-blue">
-                <div class="card-body p-3 d-flex flex-column justify-content-between">
-                    <div class="d-flex align-items-start gap-3">
-                        <div class="rounded-3 icon-box d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
-                            <i class="bi bi-globe-americas fs-4"></i>
-                        </div>
-                        <div class="flex-grow-1">
-                            <h6 class="text-muted mb-1 fw-medium" style="font-size: 0.75rem;">Countries Monitored</h6>
-                            <h3 class="fw-bold text-dark mb-0" id="val-countries">{{ $summary['countries_monitored']['value'] ?? 0 }}</h3>
-                        </div>
+            <div class="metric-card h-100 d-flex flex-column justify-content-between kpi-countries">
+                <div class="d-flex align-items-start gap-3">
+                    <div class="rounded-3 d-flex align-items-center justify-content-center" style="width: 48px; height: 48px; background: rgba(37, 99, 235, 0.15);">
+                        <i class="bi bi-globe-americas fs-4"></i>
                     </div>
-                    <div class="mt-3 d-flex justify-content-between align-items-end">
-                        <small class="fw-semibold text-white" style="font-size: 0.75rem;" id="growth-countries">
-                            <i class="bi bi-arrow-{{ $summary['countries_monitored']['trend'] ?? 'up' }}-short"></i> {{ $summary['countries_monitored']['growth'] ?? '0' }}
-                        </small>
-                        <div style="width: 60px; height: 25px;"><canvas id="spark-countries"></canvas></div>
+                    <div class="flex-grow-1">
+                        <h6 class="text-muted mb-1 fw-medium" style="font-size: 0.8rem;">Countries Monitored</h6>
+                        <h3 class="fw-bold text-dark mb-0" id="val-countries">{{ $summary['countries_monitored']['value'] ?? 0 }}</h3>
                     </div>
+                </div>
+                <div class="mt-3 d-flex justify-content-between align-items-end">
+                    <small class="fw-semibold text-success" style="font-size: 0.8rem;" id="growth-countries">
+                        <i class="bi bi-arrow-{{ $summary['countries_monitored']['trend'] ?? 'up' }}-short"></i> {{ $summary['countries_monitored']['growth'] ?? '0' }}
+                    </small>
+                    <div style="width: 60px; height: 25px;"><canvas id="spark-countries"></canvas></div>
                 </div>
             </div>
         </div>
 
         <!-- 2. High Risk Countries -->
         <div class="col">
-            <div class="card h-100 shadow-sm rounded-4 summary-card-modern grad-red">
-                <div class="card-body p-3 d-flex flex-column justify-content-between">
-                    <div class="d-flex align-items-start gap-3">
-                        <div class="rounded-3 icon-box d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
-                            <i class="bi bi-shield-fill-exclamation fs-4"></i>
-                        </div>
-                        <div class="flex-grow-1">
-                            <h6 class="text-muted mb-1 fw-medium" style="font-size: 0.75rem;">High Risk Countries</h6>
-                            <h3 class="fw-bold text-dark mb-0" id="val-high-risk">{{ $summary['high_risk']['value'] ?? 0 }}</h3>
-                        </div>
+            <div class="metric-card h-100 d-flex flex-column justify-content-between kpi-risk">
+                <div class="d-flex align-items-start gap-3">
+                    <div class="rounded-3 d-flex align-items-center justify-content-center" style="width: 48px; height: 48px; background: rgba(239, 68, 68, 0.15);">
+                        <i class="bi bi-shield-fill-exclamation fs-4"></i>
                     </div>
-                    <div class="mt-3 d-flex justify-content-between align-items-end">
-                        <small class="fw-semibold text-white" style="font-size: 0.75rem;" id="growth-high-risk">
-                            <i class="bi bi-arrow-{{ $summary['high_risk']['trend'] ?? 'up' }}-short"></i> {{ $summary['high_risk']['growth'] ?? '0' }}
-                        </small>
-                        <div style="width: 60px; height: 25px;"><canvas id="spark-high-risk"></canvas></div>
+                    <div class="flex-grow-1">
+                        <h6 class="text-muted mb-1 fw-medium" style="font-size: 0.8rem;">High Risk Countries</h6>
+                        <h3 class="fw-bold text-dark mb-0" id="val-high-risk">{{ $summary['high_risk']['value'] ?? 0 }}</h3>
                     </div>
+                </div>
+                <div class="mt-3 d-flex justify-content-between align-items-end">
+                    <small class="fw-semibold text-danger" style="font-size: 0.8rem;" id="growth-high-risk">
+                        <i class="bi bi-arrow-{{ $summary['high_risk']['trend'] ?? 'up' }}-short"></i> {{ $summary['high_risk']['growth'] ?? '0' }}
+                    </small>
+                    <div style="width: 60px; height: 25px;"><canvas id="spark-high-risk"></canvas></div>
                 </div>
             </div>
         </div>
 
         <!-- 3. Global News Today -->
         <div class="col">
-            <div class="card h-100 shadow-sm rounded-4 summary-card-modern grad-teal">
-                <div class="card-body p-3 d-flex flex-column justify-content-between">
-                    <div class="d-flex align-items-start gap-3">
-                        <div class="rounded-3 icon-box d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
-                            <i class="bi bi-broadcast-pin fs-4"></i>
-                        </div>
-                        <div class="flex-grow-1">
-                            <h6 class="text-muted mb-1 fw-medium" style="font-size: 0.75rem;">Global News Today</h6>
-                            <h3 class="fw-bold text-dark mb-0" id="val-global-news">{{ $summary['global_news']['value'] ?? 0 }}</h3>
-                        </div>
+            <div class="metric-card h-100 d-flex flex-column justify-content-between kpi-news">
+                <div class="d-flex align-items-start gap-3">
+                    <div class="rounded-3 d-flex align-items-center justify-content-center" style="width: 48px; height: 48px; background: rgba(37, 99, 235, 0.15);">
+                        <i class="bi bi-broadcast-pin fs-4"></i>
                     </div>
-                    <div class="mt-3 d-flex justify-content-between align-items-end">
-                        <small class="fw-semibold text-white" style="font-size: 0.75rem;" id="growth-global-news">
-                            <i class="bi bi-arrow-{{ $summary['global_news']['trend'] ?? 'up' }}-short"></i> {{ $summary['global_news']['growth'] ?? '0' }}
-                        </small>
-                        <div style="width: 60px; height: 25px;"><canvas id="spark-global-news"></canvas></div>
+                    <div class="flex-grow-1">
+                        <h6 class="text-muted mb-1 fw-medium" style="font-size: 0.8rem;">Global News Today</h6>
+                        <h3 class="fw-bold text-dark mb-0" id="val-global-news">{{ $summary['global_news']['value'] ?? 0 }}</h3>
                     </div>
+                </div>
+                <div class="mt-3 d-flex justify-content-between align-items-end">
+                    <small class="fw-semibold text-success" style="font-size: 0.8rem;" id="growth-global-news">
+                        <i class="bi bi-arrow-{{ $summary['global_news']['trend'] ?? 'up' }}-short"></i> {{ $summary['global_news']['growth'] ?? '0' }}
+                    </small>
+                    <div style="width: 60px; height: 25px;"><canvas id="spark-global-news"></canvas></div>
                 </div>
             </div>
         </div>
 
         <!-- 4. Weather Alerts -->
         <div class="col">
-            <div class="card h-100 shadow-sm rounded-4 summary-card-modern grad-green">
-                <div class="card-body p-3 d-flex flex-column justify-content-between">
-                    <div class="d-flex align-items-start gap-3">
-                        <div class="rounded-3 icon-box d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
-                            <i class="bi bi-cloud-haze2-fill fs-4"></i>
-                        </div>
-                        <div class="flex-grow-1">
-                            <h6 class="text-muted mb-1 fw-medium" style="font-size: 0.75rem;">Weather Alerts</h6>
-                            <h3 class="fw-bold text-dark mb-0" id="val-weather">{{ $summary['weather_alerts']['value'] ?? 0 }}</h3>
-                        </div>
+            <div class="metric-card h-100 d-flex flex-column justify-content-between kpi-weather">
+                <div class="d-flex align-items-start gap-3">
+                    <div class="rounded-3 d-flex align-items-center justify-content-center" style="width: 48px; height: 48px; background: rgba(16, 185, 129, 0.15);">
+                        <i class="bi bi-cloud-haze2-fill fs-4"></i>
                     </div>
-                    <div class="mt-3 d-flex justify-content-between align-items-end">
-                        <small class="fw-semibold text-white" style="font-size: 0.75rem;" id="growth-weather">
-                            <i class="bi bi-arrow-{{ $summary['weather_alerts']['trend'] ?? 'down' }}-short"></i> {{ $summary['weather_alerts']['growth'] ?? '0' }}
-                        </small>
-                        <div style="width: 60px; height: 25px;"><canvas id="spark-weather"></canvas></div>
+                    <div class="flex-grow-1">
+                        <h6 class="text-muted mb-1 fw-medium" style="font-size: 0.8rem;">Weather Alerts</h6>
+                        <h3 class="fw-bold text-dark mb-0" id="val-weather">{{ $summary['weather_alerts']['value'] ?? 0 }}</h3>
                     </div>
+                </div>
+                <div class="mt-3 d-flex justify-content-between align-items-end">
+                    <small class="fw-semibold text-warning" style="font-size: 0.8rem;" id="growth-weather">
+                        <i class="bi bi-arrow-{{ $summary['weather_alerts']['trend'] ?? 'down' }}-short"></i> {{ $summary['weather_alerts']['growth'] ?? '0' }}
+                    </small>
+                    <div style="width: 60px; height: 25px;"><canvas id="spark-weather"></canvas></div>
                 </div>
             </div>
         </div>
 
         <!-- 5. Currency Volatility -->
         <div class="col">
-            <div class="card h-100 shadow-sm rounded-4 summary-card-modern grad-orange">
-                <div class="card-body p-3 d-flex flex-column justify-content-between">
-                    <div class="d-flex align-items-start gap-3">
-                        <div class="rounded-3 icon-box d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
-                            <i class="bi bi-graph-up-arrow fs-4"></i>
-                        </div>
-                        <div class="flex-grow-1">
-                            <h6 class="text-muted mb-1 fw-medium" style="font-size: 0.75rem;">Currency Volatility</h6>
-                            <h3 class="fw-bold text-dark mb-0" id="val-currency">{{ $summary['currency_volatility']['value'] ?? 'Medium' }}</h3>
-                        </div>
+            <div class="metric-card h-100 d-flex flex-column justify-content-between kpi-currency">
+                <div class="d-flex align-items-start gap-3">
+                    <div class="rounded-3 d-flex align-items-center justify-content-center" style="width: 48px; height: 48px; background: rgba(245, 158, 11, 0.15);">
+                        <i class="bi bi-graph-up-arrow fs-4"></i>
                     </div>
-                    <div class="mt-3 d-flex justify-content-between align-items-end">
-                        <small class="fw-semibold text-white" style="font-size: 0.75rem;" id="growth-currency">
-                            <i class="bi bi-arrow-{{ $summary['currency_volatility']['trend'] ?? 'up' }}-short"></i> {{ $summary['currency_volatility']['growth'] ?? '0%' }}
-                        </small>
-                        <div style="width: 60px; height: 25px;"><canvas id="spark-currency"></canvas></div>
+                    <div class="flex-grow-1">
+                        <h6 class="text-muted mb-1 fw-medium" style="font-size: 0.8rem;">Currency Volatility</h6>
+                        <h3 class="fw-bold text-dark mb-0" id="val-currency">{{ $summary['currency_volatility']['value'] ?? 'Medium' }}</h3>
                     </div>
+                </div>
+                <div class="mt-3 d-flex justify-content-between align-items-end">
+                    <small class="fw-semibold text-warning" style="font-size: 0.8rem;" id="growth-currency">
+                        <i class="bi bi-arrow-{{ $summary['currency_volatility']['trend'] ?? 'up' }}-short"></i> {{ $summary['currency_volatility']['growth'] ?? '0%' }}
+                    </small>
+                    <div style="width: 60px; height: 25px;"><canvas id="spark-currency"></canvas></div>
                 </div>
             </div>
         </div>
@@ -651,11 +593,11 @@ function createSparkline(ctx, data, color) {
 
 function initSparklines() {
     const s = initialData.summary;
-    sparklines['countries'] = createSparkline(document.getElementById('spark-countries'), s.countries_monitored.sparkline, '#ffffff');
-    sparklines['high_risk'] = createSparkline(document.getElementById('spark-high-risk'), s.high_risk.sparkline, '#ffffff');
-    sparklines['global_news'] = createSparkline(document.getElementById('spark-global-news'), s.global_news.sparkline, '#ffffff');
-    sparklines['weather'] = createSparkline(document.getElementById('spark-weather'), s.weather_alerts.sparkline, '#ffffff');
-    sparklines['currency'] = createSparkline(document.getElementById('spark-currency'), s.currency_volatility.sparkline, '#ffffff');
+    sparklines['countries'] = createSparkline(document.getElementById('spark-countries'), s.countries_monitored.sparkline, '#2563EB');
+    sparklines['high_risk'] = createSparkline(document.getElementById('spark-high-risk'), s.high_risk.sparkline, '#EF4444');
+    sparklines['global_news'] = createSparkline(document.getElementById('spark-global-news'), s.global_news.sparkline, '#2563EB');
+    sparklines['weather'] = createSparkline(document.getElementById('spark-weather'), s.weather_alerts.sparkline, '#10B981');
+    sparklines['currency'] = createSparkline(document.getElementById('spark-currency'), s.currency_volatility.sparkline, '#F59E0B');
 }
 
 function initMap() {
@@ -699,24 +641,7 @@ function updateMapMarkers(data) {
     });
 }
 
-// Global Chart.js Styles & Defaults
-Chart.defaults.font.family = "'Inter', sans-serif";
-Chart.defaults.color = "#6B7A68";
-Chart.defaults.scale.grid.color = "rgba(0,0,0,0.08)";
-Chart.defaults.plugins.tooltip.backgroundColor = "rgba(255, 255, 255, 0.95)";
-Chart.defaults.plugins.tooltip.titleColor = "#1E2D1D";
-Chart.defaults.plugins.tooltip.bodyColor = "#6B7A68";
-Chart.defaults.plugins.tooltip.borderColor = "rgba(0,0,0,0.05)";
-Chart.defaults.plugins.tooltip.borderWidth = 1;
-Chart.defaults.plugins.tooltip.cornerRadius = 8;
-Chart.defaults.plugins.tooltip.padding = 10;
-Chart.defaults.plugins.tooltip.titleFont = { size: 14, weight: 'bold' };
-Chart.defaults.plugins.tooltip.bodyFont = { size: 13 };
-Chart.defaults.animation.duration = 800;
-Chart.defaults.animation.easing = 'easeOutQuart';
-Chart.defaults.plugins.legend.labels.usePointStyle = true;
-Chart.defaults.elements.point.hoverRadius = 6;
-Chart.defaults.elements.point.hoverBorderWidth = 2;
+
 
 // Custom plugin for Average Line
 const averageLinePlugin = {
@@ -755,7 +680,7 @@ function initNewsChart() {
     const ctx = document.getElementById('newsCategoryChart');
     if(!ctx) return;
     const data = initialData.newsCategoryData;
-    const colors = ['#4A7A44', '#198754', '#ffc107', '#dc3545'];
+    const colors = ['#8B5CF6', '#A78BFA', '#C4B5FD', '#DDD6FE'];
     
     charts['news'] = new Chart(ctx, {
         type: 'bar',
@@ -802,13 +727,13 @@ function initRiskTrend() {
             datasets: [{
                 label: 'Risk Score',
                 data: data.data,
-                borderColor: '#4A7A44',
+                borderColor: '#EF4444',
                 backgroundColor: gradientFill,
                 borderWidth: 3,
                 fill: true,
                 tension: 0.4,
                 pointBackgroundColor: '#fff',
-                pointBorderColor: '#4A7A44',
+                pointBorderColor: '#EF4444',
                 pointBorderWidth: 2,
                 pointRadius: 0,
                 pointHoverRadius: 8
@@ -835,9 +760,9 @@ function initCurrencyTrend() {
         data: {
             labels: data.labels,
             datasets: [
-                { label: 'USD/IDR', data: data.datasets['USD/IDR'], borderColor: '#4A7A44', tension: 0.4, pointRadius: 4, pointStyle: 'circle' },
-                { label: 'EUR/IDR', data: data.datasets['EUR/IDR'], borderColor: '#198754', tension: 0.4, pointRadius: 4, pointStyle: 'circle' },
-                { label: 'CNY/IDR', data: data.datasets['CNY/IDR'], borderColor: '#ffc107', tension: 0.4, pointRadius: 4, pointStyle: 'circle' }
+                { label: 'USD/IDR', data: data.datasets['USD/IDR'], borderColor: '#10B981', tension: 0.4, pointRadius: 4, pointStyle: 'circle' },
+                { label: 'EUR/IDR', data: data.datasets['EUR/IDR'], borderColor: '#34D399', tension: 0.4, pointRadius: 4, pointStyle: 'circle' },
+                { label: 'CNY/IDR', data: data.datasets['CNY/IDR'], borderColor: '#6EE7B7', tension: 0.4, pointRadius: 4, pointStyle: 'circle' }
             ]
         },
         options: {
@@ -861,9 +786,9 @@ function initWeatherTrend() {
         data: {
             labels: data.labels,
             datasets: [
-                { type: 'line', label: 'Temp (Â°C)', data: data.temp, borderColor: '#dc3545', tension: 0.4, pointRadius: 2, fill: false },
-                { type: 'line', label: 'Humidity (%)', data: data.humidity, borderColor: '#0d6efd', borderDash: [5, 5], tension: 0.4, pointRadius: 2, fill: false },
-                { type: 'bar', label: 'Wind (km/h)', data: data.wind, backgroundColor: 'rgba(25, 135, 84, 0.8)', borderRadius: 4 }
+                { type: 'line', label: 'Temp (Â°C)', data: data.temp, borderColor: '#F59E0B', tension: 0.4, pointRadius: 2, fill: false },
+                { type: 'line', label: 'Humidity (%)', data: data.humidity, borderColor: '#FBBF24', borderDash: [5, 5], tension: 0.4, pointRadius: 2, fill: false },
+                { type: 'bar', label: 'Wind (km/h)', data: data.wind, backgroundColor: 'rgba(245, 158, 11, 0.8)', borderRadius: 4 }
             ]
         },
         options: {
@@ -885,8 +810,8 @@ function initGdpTrend() {
     const data = initialData.gdpTrendData;
     
     let gradientFill = ctx.createLinearGradient(0, 0, 0, 250);
-    gradientFill.addColorStop(0, 'rgba(139, 158, 119, 0.8)');
-    gradientFill.addColorStop(1, 'rgba(139, 158, 119, 0.1)');
+    gradientFill.addColorStop(0, 'rgba(37, 99, 235, 0.8)');
+    gradientFill.addColorStop(1, 'rgba(37, 99, 235, 0.1)');
 
     charts['gdp'] = new Chart(ctx, {
         type: 'bar',

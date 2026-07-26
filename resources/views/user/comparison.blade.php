@@ -8,7 +8,7 @@
     </div>
 
     <!-- Selectors -->
-    <div class="card border-0 shadow-sm rounded-4 mb-4 overflow-hidden">
+    <div class="card border-0 mb-4 overflow-hidden" style="border: 1px solid var(--border-color) !important; border-radius: var(--radius-card) !important; box-shadow: var(--shadow-global) !important;">
         <div class="card-body p-4 bg-white">
             <form id="compareForm" class="row g-3 align-items-center m-0">
                 <!-- Country A -->
@@ -58,7 +58,7 @@
     <!-- Comparison Content (VS Board) -->
     <div id="comparisonContent" class="d-none">
         
-        <div class="card border-0 shadow-sm rounded-4 mb-4 overflow-hidden">
+        <div class="card border-0 mb-4 overflow-hidden" style="border: 1px solid var(--border-color) !important; border-radius: var(--radius-card) !important; box-shadow: var(--shadow-global) !important;">
             <!-- Headers for the Board -->
             <div class="row g-0 align-items-center border-bottom py-4 px-3" style="background: #f8fafc;">
                 <div class="col-5 d-flex align-items-center justify-content-center">
@@ -166,7 +166,7 @@
         </div>
 
         <!-- AI Recommendation Summary -->
-        <div class="card border-0 shadow-sm rounded-4 mt-3" style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);">
+        <div class="card border-0 mt-3" style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border-radius: var(--radius-card) !important; box-shadow: var(--shadow-global) !important;">
             <div class="card-body p-3 d-flex align-items-center gap-3">
                 <div class="d-flex align-items-center justify-content-center bg-success text-white rounded-circle shadow-sm flex-shrink-0" style="width: 44px; height: 44px;">
                     <i class="bi bi-robot fs-5"></i>
@@ -185,23 +185,23 @@
 @push('scripts')
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <style>
-    .transition-all { transition: all 0.2s ease-in-out; }
-    .hover-bg-light:hover { background-color: #f1f5f9 !important; }
+    .transition-all { transition: all var(--transition-speed) ease-in-out; }
+    .hover-bg-light:hover { background-color: rgba(37, 99, 235, 0.05) !important; }
     
     /* Select2 Bootstrap 5 Theme overrides */
     .select2-container .select2-selection--single {
         height: 48px;
-        border: 1px solid #e2e8f0;
-        border-radius: 0.5rem;
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-card);
         display: flex;
         align-items: center;
-        background-color: #f8fafc;
+        background-color: var(--surface-color);
         box-shadow: none !important;
     }
     .select2-container--default .select2-selection--single .select2-selection__rendered {
         line-height: 48px;
         padding-left: 16px;
-        color: #334155;
+        color: var(--text-primary);
         font-weight: 600;
     }
     .select2-container--default .select2-selection--single .select2-selection__arrow {
@@ -209,21 +209,22 @@
         right: 12px;
     }
     .select2-dropdown {
-        border-color: #e2e8f0;
-        border-radius: 0.5rem;
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        border-color: var(--border-color);
+        border-radius: var(--radius-card);
+        box-shadow: var(--shadow-global);
         overflow: hidden;
     }
     .select2-results__option {
         padding: 10px 16px;
         font-weight: 500;
+        transition: background var(--transition-speed);
     }
     .select2-container--default .select2-results__option--highlighted[aria-selected] {
-        background-color: #0ea5e9;
+        background-color: var(--primary);
     }
     .select2-search--dropdown .select2-search__field {
-        border-radius: 4px;
-        border: 1px solid #cbd5e1;
+        border-radius: var(--radius-button);
+        border: 1px solid var(--border-color);
     }
 </style>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>

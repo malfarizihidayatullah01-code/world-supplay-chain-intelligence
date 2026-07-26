@@ -133,65 +133,26 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <h4 class="mb-1 fw-bold text-dark">Analysis Articles</h4>
-            <p class="text-muted mb-0" style="font-size: 0.9rem;">Kelola artikel analisis dan insight terkait risiko rantai pasok global</p>
-        </div>
-        <div class="d-flex gap-3 align-items-center">
-            <div class="text-muted" style="font-size: 0.85rem;">
-                <i class="bi bi-calendar3 me-1"></i> {{ now()->format('d M Y, H:i') }} WIB
-            </div>
-            <a href="{{ route('admin.articles.create') }}" class="btn btn-navy" style="border-radius: 8px;">
-                <i class="bi bi-plus-lg me-1"></i> Artikel Baru
-            </a>
-        </div>
-    </div>
-
-    <!-- KPIs -->
-    <div class="row g-3 mb-4">
-        <div class="col-md-3">
-            <div class="admin-card card kpi-card">
-                <div class="kpi-icon primary">
-                    <i class="bi bi-file-text"></i>
-                </div>
-                <div>
-                    <div class="text-muted mb-1" style="font-size: 0.75rem; font-weight:600;">Total Artikel</div>
-                    <div class="fs-4 fw-bold text-dark mb-0" style="line-height: 1;">{{ $totalArticles }}</div>
-                    <div class="text-muted mt-1" style="font-size: 0.7rem;">Semua artikel</div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="admin-card card kpi-card">
-                <div class="kpi-icon success">
-                    <i class="bi bi-check-circle"></i>
-                </div>
-                <div>
-                    <div class="text-muted mb-1" style="font-size: 0.75rem; font-weight:600;">Dipublikasikan</div>
-                    <div class="fs-4 fw-bold text-dark mb-0" style="line-height: 1;">{{ $publishedArticles }}</div>
-                    <div class="text-muted mt-1" style="font-size: 0.7rem;">{{ $publishedPercentage }}% dari total</div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="admin-card card kpi-card">
-                <div class="kpi-icon warning">
-                    <i class="bi bi-file-earmark-text"></i>
-                </div>
-                <div>
-                    <div class="text-muted mb-1" style="font-size: 0.75rem; font-weight:600;">Draft</div>
-                    <div class="fs-4 fw-bold text-dark mb-0" style="line-height: 1;">{{ $draftArticles }}</div>
-                    <div class="text-muted mt-1" style="font-size: 0.7rem;">Belum dipublikasikan</div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="admin-card card kpi-card">
-                <div class="kpi-icon info">
-                    <i class="bi bi-clock-history"></i>
-                </div>
-                <div>
-                    <div class="text-muted mb-1" style="font-size: 0.75rem; font-weight:600;">Terakhir Diperbarui</div>
-                    <div class="fs-5 fw-bold text-dark mb-0" style="line-height: 1;">{{ $latestArticle ? $latestArticle->updated_at->format('d M Y') : '-' }}</div>
-                    <div class="text-muted mt-1" style="font-size: 0.7rem;">{{ $latestArticle ? $latestArticle->updated_at->format('H:i') . ' WIB' : '' }}</div>
+            <div class="d-flex align-items-center gap-3 mt-2">
+                <p class="text-muted mb-0" style="font-size: 0.9rem;">{{ __('Manage analysis articles and insights related to global supply chain risks') }}</p>
+                <div class="d-flex align-items-center gap-3 bg-white border rounded-pill px-3 py-1 shadow-sm">
+                    <div class="d-flex align-items-center gap-1">
+                        <i class="bi bi-file-text" style="color: #3E53A0;"></i>
+                        <span class="fw-bold text-dark" style="font-size: 0.8rem;">{{ $totalArticles }}</span>
+                        <span class="text-muted" style="font-size: 0.8rem;">{{ __('Total') }}</span>
+                    </div>
+                    <div class="vr" style="opacity: 0.2; height: 12px; align-self: center;"></div>
+                    <div class="d-flex align-items-center gap-1" style="font-size: 0.8rem;">
+                        <i class="bi bi-check-circle" style="color: #10B981;"></i>
+                        <span class="fw-bold text-success">{{ $publishedArticles }}</span>
+                        <span class="text-muted" style="font-size: 0.8rem;">{{ __('Published') }}</span>
+                    </div>
+                    <div class="vr" style="opacity: 0.2; height: 12px; align-self: center;"></div>
+                    <div class="d-flex align-items-center gap-1" style="font-size: 0.8rem;">
+                        <i class="bi bi-file-earmark-text" style="color: #F59E0B;"></i>
+                        <span class="fw-bold text-warning">{{ $draftArticles }}</span>
+                        <span class="text-muted" style="font-size: 0.8rem;">{{ __('Draft') }}</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -199,58 +160,65 @@
 
     <!-- Toolbar -->
     <div class="admin-card card p-3 mb-4">
-        <form method="GET" action="{{ route('admin.articles.index') }}" class="d-flex flex-wrap gap-3 align-items-end justify-content-between">
-            <div class="search-box" style="flex-grow: 1; max-width: 350px;">
-                <input type="text" name="search" class="form-control" placeholder="Cari artikel..." value="{{ request('search') }}">
-            </div>
-            
-            <div class="d-flex gap-3 align-items-end">
+        <div class="d-flex flex-wrap gap-3 align-items-end justify-content-between">
+            <form method="GET" action="{{ route('admin.articles.index') }}" class="d-flex flex-wrap gap-3 align-items-end">
+                <div class="search-box">
+                    <input type="text" name="search" class="form-control rounded-pill px-3" style="min-width: 250px;" placeholder="{{ __('Search articles...') }}" value="{{ request('search') }}">
+                </div>
+                
                 <div class="d-flex flex-column">
-                    <label style="font-size:0.7rem; color:#888; font-weight:600; margin-bottom:5px;">Kategori</label>
-                    <select name="category" class="form-select" style="min-width: 150px;">
-                        <option value="all">Semua Kategori</option>
+                    <label style="font-size:0.7rem; color:#888; font-weight:600; margin-bottom:5px; padding-left:10px;">{{ __('Category') }}</label>
+                    <select name="category" class="form-select rounded-pill px-3" style="min-width: 180px;">
+                        <option value="all">{{ __('All Categories') }}</option>
                         @foreach($categories as $cat)
                             <option value="{{ $cat->category }}" {{ request('category') == $cat->category ? 'selected' : '' }}>{{ $cat->category }}</option>
                         @endforeach
                     </select>
                 </div>
+                
                 <div class="d-flex flex-column">
-                    <label style="font-size:0.7rem; color:#888; font-weight:600; margin-bottom:5px;">{{ __('Status') }}</label>
-                    <select name="status" class="form-select" style="min-width: 150px;">
-                        <option value="all">Semua Status</option>
-                        <option value="published" {{ request('status') == 'published' ? 'selected' : '' }}>Dipublikasikan</option>
-                        <option value="draft" {{ request('status') == 'draft' ? 'selected' : '' }}>Draft</option>
+                    <label style="font-size:0.7rem; color:#888; font-weight:600; margin-bottom:5px; padding-left:10px;">{{ __('Status') }}</label>
+                    <select name="status" class="form-select rounded-pill px-3" style="min-width: 180px;">
+                        <option value="all">{{ __('All Status') }}</option>
+                        <option value="published" {{ request('status') == 'published' ? 'selected' : '' }}>{{ __('Published') }}</option>
+                        <option value="draft" {{ request('status') == 'draft' ? 'selected' : '' }}>{{ __('Draft') }}</option>
                     </select>
                 </div>
                 
-                <button type="submit" class="btn btn-navy" style="border-radius: 8px;">
-                    <i class="bi bi-funnel"></i>{{ __('Filter') }}</button>
-            </div>
-        </form>
+                <button type="submit" class="btn btn-navy rounded-pill px-4">
+                    <i class="bi bi-funnel me-1"></i> {{ __('Filter') }}
+                </button>
+            </form>
+
+            <a href="{{ route('admin.articles.create') }}" class="btn btn-navy rounded-pill px-4" style="height: 38px; display: flex; align-items: center;">
+                <i class="bi bi-plus-lg me-2"></i> {{ __('New Article') }}
+            </a>
+        </div>
     </div>
 
     <div class="row g-4">
         <!-- Table Column -->
-        <div class="col-lg-8">
+        <div class="col-lg-12">
             <div class="admin-card card h-100">
                 <div class="card-header bg-white border-bottom p-3 d-flex justify-content-between align-items-center">
-                    <h6 class="mb-0 fw-bold">Daftar Artikel</h6>
+                    <h6 class="mb-0 fw-bold">{{ __('Article List') }}</h6>
                 </div>
                 <div class="card-body p-0 table-container">
                     <table class="table">
                         <thead>
                             <tr>
-                                <th class="ps-4" style="width: 5%;">No.</th>
-                                <th style="width: 40%;">Artikel</th>
-                                <th style="width: 15%;">Kategori</th>
-                                <th style="width: 15%;">Penulis</th>
-                                <th style="width: 15%;">Tanggal</th>
+                                <th class="ps-4" style="width: 5%;">{{ __('No.') }}</th>
+                                <th style="width: 35%;">{{ __('Article') }}</th>
+                                <th style="width: 15%;">{{ __('Category') }}</th>
+                                <th style="width: 15%;">{{ __('Author') }}</th>
+                                <th style="width: 10%;">{{ __('Date') }}</th>
                                 <th style="width: 10%;">{{ __('Status') }}</th>
+                                <th style="width: 10%;" class="text-center">{{ __('Action') }}</th>
                             </tr>
                         </thead>
                         <tbody>
                             @forelse($articles as $index => $article)
-                            <tr onclick="showArticleDetail({{ json_encode($article) }})" class="article-row" id="row-{{ $article->id }}">
+                            <tr>
                                 <td class="ps-4">{{ $articles->firstItem() + $index }}</td>
                                 <td>
                                     <div class="d-flex align-items-center gap-3">
@@ -276,17 +244,34 @@
                                 </td>
                                 <td>
                                     @if($article->is_published)
-                                        <span class="status-badge status-published">Dipublikasikan</span>
+                                        <span class="status-badge status-published">{{ __('Published') }}</span>
                                     @else
-                                        <span class="status-badge status-draft">Draft</span>
+                                        <span class="status-badge status-draft">{{ __('Draft') }}</span>
                                     @endif
+                                </td>
+                                <td>
+                                    <div class="d-flex gap-2 justify-content-center align-items-center">
+                                        <a href="{{ route('admin.articles.show', $article->id) }}" class="btn btn-sm btn-outline-info d-flex align-items-center justify-content-center" style="width: 32px; height: 32px; padding: 0;" title="{{ __('View') }}">
+                                            <i data-lucide="eye" style="width: 16px; height: 16px;"></i>
+                                        </a>
+                                        <a href="{{ route('admin.articles.edit', $article->id) }}" class="btn btn-sm btn-outline-primary d-flex align-items-center justify-content-center" style="width: 32px; height: 32px; padding: 0;" title="{{ __('Edit') }}">
+                                            <i data-lucide="edit-2" style="width: 16px; height: 16px;"></i>
+                                        </a>
+                                        <form action="{{ route('admin.articles.destroy', $article->id) }}" method="POST" class="d-inline m-0 p-0" onsubmit="return confirm('{{ __('Are you sure you want to delete this article?') }}');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-sm btn-outline-danger d-flex align-items-center justify-content-center" style="width: 32px; height: 32px; padding: 0;" title="{{ __('Delete') }}">
+                                                <i data-lucide="trash-2" style="width: 16px; height: 16px;"></i>
+                                            </button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="6" class="text-center py-5 text-muted">
+                                <td colspan="7" class="text-center py-5 text-muted">
                                     <i class="bi bi-file-earmark-x fs-1 d-block mb-2"></i>
-                                    Tidak ada artikel yang ditemukan.
+                                    {{ __('No articles found.') }}
                                 </td>
                             </tr>
                             @endforelse
@@ -296,7 +281,7 @@
                 @if($articles->hasPages())
                 <div class="card-footer bg-white border-top p-3 d-flex justify-content-between align-items-center">
                     <div class="text-muted" style="font-size: 0.8rem;">
-                        Menampilkan {{ $articles->firstItem() }} - {{ $articles->lastItem() }} dari {{ $articles->total() }} artikel
+                        {{ __('Showing') }} {{ $articles->firstItem() }} - {{ $articles->lastItem() }} {{ __('to') }} {{ $articles->total() }} {{ __('articles') }}
                     </div>
                     <div>
                         {{ $articles->links('pagination::bootstrap-4') }}
@@ -306,118 +291,7 @@
             </div>
         </div>
 
-        <!-- Detail Panel Column -->
-        <div class="col-lg-4">
-            <div class="admin-card card h-100 p-4" id="articleDetailPanel">
-                <h6 class="fw-bold mb-3">Detail Artikel</h6>
-                
-                <img id="detailImage" src="" class="article-image bg-light d-none" alt="Cover Image">
-                <div id="detailNoImage" class="article-image bg-light d-flex align-items-center justify-content-center text-muted mb-3">
-                    <i class="bi bi-image fs-1"></i>
-                </div>
-
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <span id="detailStatus" class="status-badge status-published">Dipublikasikan</span>
-                </div>
-
-                <h5 id="detailTitle" class="fw-bold text-dark mb-2" style="font-size: 1.1rem; line-height:1.4;">--</h5>
-                <p id="detailContent" class="text-muted mb-4" style="font-size: 0.85rem; line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;"></p>
-
-                <div class="mb-3">
-                    <div class="text-dark fw-bold mb-2" style="font-size:0.8rem;">Kategori</div>
-                    <span id="detailCategory" class="category-badge">--</span>
-                </div>
-
-                <div class="mb-4">
-                    <div class="text-dark fw-bold mb-2" style="font-size:0.8rem;">Tags</div>
-                    <div id="detailTagsContainer">
-                        <span class="text-muted" style="font-size:0.8rem;">Tidak ada tag</span>
-                    </div>
-                </div>
-
-                <div class="mt-auto pt-3 border-top d-flex gap-2">
-                    <a href="#" id="btnEditArticle" class="btn btn-navy flex-grow-1" style="border-radius:8px; font-size:0.85rem;"><i class="bi bi-pencil me-1"></i> Edit</a>
-                    
-                    <form id="formDeleteArticle" action="#" method="POST" class="flex-grow-1 m-0 p-0" onsubmit="return confirm('Apakah Anda yakin ingin menghapus artikel ini?');">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-outline-danger w-100" style="border-radius:8px; font-size:0.85rem;">
-                            <i class="bi bi-trash me-1"></i> Hapus
-                        </button>
-                    </form>
-                </div>
-            </div>
         </div>
     </div>
 </div>
 @endsection
-
-@push('scripts')
-<script>
-    function showArticleDetail(article) {
-        // Highlight active row
-        document.querySelectorAll('.article-row').forEach(row => row.classList.remove('active-row'));
-        const activeRow = document.getElementById('row-' + article.id);
-        if (activeRow) activeRow.classList.add('active-row');
-
-        const panel = document.getElementById('articleDetailPanel');
-        panel.classList.add('active');
-
-        // Populate Image
-        const imgEl = document.getElementById('detailImage');
-        const noImgEl = document.getElementById('detailNoImage');
-        if (article.image) {
-            imgEl.src = article.image;
-            imgEl.classList.remove('d-none');
-            noImgEl.classList.add('d-none');
-        } else {
-            imgEl.src = '';
-            imgEl.classList.add('d-none');
-            noImgEl.classList.remove('d-none');
-            noImgEl.classList.add('d-flex');
-        }
-
-        // Status
-        const statusEl = document.getElementById('detailStatus');
-        if (article.is_published) {
-            statusEl.className = 'status-badge status-published';
-            statusEl.textContent = 'Dipublikasikan';
-        } else {
-            statusEl.className = 'status-badge status-draft';
-            statusEl.textContent = 'Draft';
-        }
-
-        // Text content
-        document.getElementById('detailTitle').textContent = article.title;
-        document.getElementById('detailContent').textContent = article.content || 'Tidak ada konten.';
-        document.getElementById('detailCategory').textContent = article.category || 'General';
-
-        // Tags
-        const tagsContainer = document.getElementById('detailTagsContainer');
-        tagsContainer.innerHTML = '';
-        if (article.tags && Array.isArray(article.tags) && article.tags.length > 0) {
-            article.tags.forEach(tag => {
-                const span = document.createElement('span');
-                span.className = 'tag-badge';
-                span.textContent = tag;
-                tagsContainer.appendChild(span);
-            });
-        } else {
-            tagsContainer.innerHTML = '<span class="text-muted" style="font-size:0.8rem;">Tidak ada tag</span>';
-        }
-
-        // Action Buttons
-        document.getElementById('btnEditArticle').href = `/admin/articles/${article.id}/edit`;
-        document.getElementById('formDeleteArticle').action = `/admin/articles/${article.id}`;
-    }
-
-    // Chart.js initialization
-    document.addEventListener('DOMContentLoaded', function() {
-        // Auto select first row if exists
-        const firstRow = document.querySelector('.article-row');
-        if (firstRow) {
-            firstRow.click();
-        }
-    });
-</script>
-@endpush
