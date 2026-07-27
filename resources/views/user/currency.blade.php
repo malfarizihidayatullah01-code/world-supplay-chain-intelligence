@@ -326,7 +326,7 @@
                 <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body p-3">
-                <input type="text" class="form-control form-control-sm bg-light border-0 rounded-pill mb-2 px-3" id="targetSearch" placeholder="Cari...">
+                <input type="text" class="form-control form-control-sm bg-light border-0 rounded-pill mb-2 px-3" id="targetSearch" placeholder="Search...">
                 <div class="currency-list" id="targetList">
                     @foreach($currencies as $c)
                         @php $iso = strtolower(substr($c->currency_code, 0, 2)); @endphp
@@ -350,7 +350,7 @@
                 <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body p-3">
-                <input type="text" class="form-control form-control-sm bg-light border-0 rounded-pill mb-2 px-3" id="baseSearch" placeholder="Cari...">
+                <input type="text" class="form-control form-control-sm bg-light border-0 rounded-pill mb-2 px-3" id="baseSearch" placeholder="Search...">
                 <div class="currency-list" id="baseList">
                     @foreach($currencies as $c)
                         @php $iso = strtolower(substr($c->currency_code, 0, 2)); @endphp

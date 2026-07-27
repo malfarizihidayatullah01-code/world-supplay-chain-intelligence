@@ -20,7 +20,7 @@
                     </h5>
 
                     <div class="mb-3">
-                        <label class="form-label small fw-bold text-muted mb-1">{{ __('Cari Pelabuhan') }}</label>
+                        <label class="form-label small fw-bold text-muted mb-1">{{ __('Search Port') }}</label>
                         <div class="input-group">
                             <span class="input-group-text bg-light border-end-0"><i class="bi bi-search text-muted" style="font-size:0.8rem;"></i></span>
                             <input type="text" id="searchInput" class="form-control bg-light border-start-0 ps-0" placeholder="{{ __('Nama pelabuhan...') }}" style="font-size:0.875rem;">
@@ -28,9 +28,9 @@
                     </div>
 
                     <div class="mb-4">
-                        <label class="form-label small fw-bold text-muted mb-1">{{ __('Negara') }}</label>
+                        <label class="form-label small fw-bold text-muted mb-1">{{ __('Country') }}</label>
                         <select id="countrySelect" class="form-select" style="font-size:0.875rem;">
-                            <option value="all">{{ __('Semua Negara') }}</option>
+                            <option value="all">{{ __('All Countries') }}</option>
                             @php
                                 $portCountries = $ports->pluck('country')->filter()->unique('id')->sortBy('name');
                             @endphp
@@ -201,7 +201,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         <img src="https://flagcdn.com/32x24/${countryCode}.png" style="margin-bottom:8px;border-radius:3px;border:1px solid #e5e7eb;" onerror="this.style.display='none'">
                         <div style="font-weight:700;font-size:0.9rem;margin-bottom:3px;">${port.name}</div>
                         <div style="font-size:0.78rem;color:#6B7280;margin-bottom:2px;">${countryName}</div>
-                        <a href="/user/ports/${port.id}" class="popup-detail-btn">Lihat Detail →</a>
+                        <a href="/user/ports/${port.id}" class="popup-detail-btn">View Details →</a>
                     </div>`);
                 clusterGroup.addLayer(marker);
             }

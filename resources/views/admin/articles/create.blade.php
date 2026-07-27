@@ -58,11 +58,11 @@
     <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h4 class="mb-1 fw-bold text-dark">Tambah Artikel Baru</h4>
+            <h4 class="mb-1 fw-bold text-dark">Add New Article</h4>
             <p class="text-muted mb-0" style="font-size: 0.9rem;">Buat analisis atau insight baru</p>
         </div>
         <a href="{{ route('admin.articles.index') }}" class="btn btn-light border" style="border-radius: 8px; font-size: 0.85rem;">
-            <i class="bi bi-arrow-left me-1"></i> Kembali ke Daftar
+            <i class="bi bi-arrow-left me-1"></i> Back to List
         </a>
     </div>
 
@@ -119,7 +119,7 @@
             <div class="d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
                 <a href="{{ route('admin.articles.index') }}" class="btn btn-light border px-4" style="border-radius: 8px;">{{ __('Cancel') }}</a>
                 <button type="submit" class="btn btn-navy px-4" style="border-radius: 8px;">
-                    <i class="bi bi-save me-1"></i> Simpan Artikel
+                    <i class="bi bi-save me-1"></i> Save Article
                 </button>
             </div>
         </form>

@@ -124,9 +124,9 @@
             </div>
 
             <div class="d-flex justify-content-end gap-2">
-                <a href="{{ route('admin.ports.index') }}" class="btn btn-light border px-4" style="border-radius: 8px;">{{ __('Batal') }}</a>
+                <a href="{{ route('admin.ports.index') }}" class="btn btn-light border px-4" style="border-radius: 8px;">{{ __('Cancel') }}</a>
                 <button type="submit" class="btn btn-navy px-4" style="border-radius: 8px;">
-                    <i data-lucide="save" style="width: 16px; margin-right: 4px;"></i> Simpan Perubahan
+                    <i data-lucide="save" style="width: 16px; margin-right: 4px;"></i> Save Changes
                 </button>
             </div>
         </form>

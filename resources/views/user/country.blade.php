@@ -309,7 +309,7 @@
                         <div style="position: absolute; top: 18px; left: 18px; z-index: 1000; width: 240px;">
                             <div style="background: #fff; border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.12); padding: 6px 10px; display: flex; align-items: center; gap: 8px;">
                                 <i class="bi bi-search" style="color: #9CA3AF; font-size: 0.85rem; flex-shrink:0;"></i>
-                                <input type="text" id="mapCountrySearch" placeholder="{{ __('Cari negara...') }}"
+                                <input type="text" id="mapCountrySearch" placeholder="{{ __('Search country...') }}"
                                     style="border: none; outline: none; background: transparent; font-size: 0.875rem; color: #374151; width: 100%; font-family: 'Inter', sans-serif;"
                                     autocomplete="off">
                             </div>
@@ -624,7 +624,7 @@
                 }
                 const filtered = MAP_COUNTRIES.filter(c => c.name.toLowerCase().includes(term));
                 if (filtered.length === 0) {
-                    mapSearchResults.innerHTML = '<div style="padding:10px 14px;font-size:0.85rem;color:#6B7280;text-align:center;">Tidak ada negara ditemukan</div>';
+                    mapSearchResults.innerHTML = '<div style="padding:10px 14px;font-size:0.85rem;color:#6B7280;text-align:center;">No country found</div>';
                 } else {
                     filtered.slice(0, 30).forEach(function(c) {
                         const item = document.createElement('a');
@@ -639,7 +639,7 @@
                         mapSearchResults.appendChild(item);
                     });
                     if (filtered.length > 30) {
-                        mapSearchResults.innerHTML += `<div style="padding:8px 14px;font-size:0.78rem;color:#9CA3AF;text-align:center;">+${filtered.length-30} negara lainnya, ketik lebih spesifik</div>`;
+                        mapSearchResults.innerHTML += `<div style="padding:8px 14px;font-size:0.78rem;color:#9CA3AF;text-align:center;">+${filtered.length-30} other countries, type more specifically</div>`;
                     }
                 }
                 mapSearchResults.style.display = 'block';

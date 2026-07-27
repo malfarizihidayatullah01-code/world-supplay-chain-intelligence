@@ -12,8 +12,8 @@
         <div class="row align-items-center position-relative z-1">
             <!-- Kiri (70%) -->
             <div class="col-lg-8 mb-4 mb-lg-0">
-                <h2 class="fw-bolder mb-2 text-white" style="letter-spacing: -0.5px;">{{ __('Intelijen Berita Global') }}</h2>
-                <p class="text-white-50 mb-3 fs-6" style="max-width: 600px;">{{ __('Pusat pemantauan berita terkini untuk sektor logistik, perdagangan, dan maritim dunia.') }}</p>
+                <h2 class="fw-bolder mb-2 text-white" style="letter-spacing: -0.5px;">{{ __('Global News Intelligence') }}</h2>
+                <p class="text-white-50 mb-3 fs-6" style="max-width: 600px;">{{ __('Monitoring center for the latest news in logistics, trade, and global maritime sectors.') }}</p>
                 <span class="badge rounded-pill fw-semibold bg-white text-primary px-3 py-2" style="font-size: 0.8rem;">
                     🌐 {{ __('Global Monitoring') }}
                 </span>
@@ -23,16 +23,16 @@
             <div class="col-lg-4 d-flex justify-content-lg-end">
                 <div class="d-flex align-items-center gap-4 bg-white p-3 rounded-4 shadow-sm border" style="border-color: var(--border-color) !important; border-radius: var(--radius-card) !important;">
                     <div>
-                        <span class="d-block text-muted fw-semibold mb-1" style="font-size: 0.8rem;">{{ __('Total Berita') }}</span>
+                        <span class="d-block text-muted fw-semibold mb-1" style="font-size: 0.8rem;">{{ __('Total News') }}</span>
                         <h2 class="fw-bold text-primary mb-2 lh-1" style="font-size: 38px;" id="totalNewsCount">{{ $categoryStats['total'] }}</h2>
                         <div class="d-flex align-items-center gap-1">
                             <span class="text-success" style="font-size: 0.5rem;">●</span>
-                            <small class="text-muted" style="font-size: 0.75rem;">{{ __('Terakhir diperbarui: 2 menit lalu') }}</small>
+                            <small class="text-muted" style="font-size: 0.75rem;">{{ __('Last updated: 2 minutes ago') }}</small>
                         </div>
                     </div>
                     <button class="btn btn-primary btn-sync shadow-sm rounded-pill px-4 py-2 fw-bold d-flex align-items-center justify-content-center gap-2" id="syncNewsBtn">
                         <i class="bi bi-arrow-repeat fs-5"></i>
-                        <span>{{ __('Sync Berita') }}</span>
+                        <span>{{ __('Sync News') }}</span>
                     </button>
                 </div>
             </div>
@@ -47,13 +47,13 @@
                 <div class="col-12 col-md-4 col-lg-5">
                     <div class="input-group input-group-lg bg-light rounded-pill px-2 border" style="border-color: #F3F4F6 !important;">
                         <span class="input-group-text bg-transparent border-0"><i class="bi bi-search text-muted"></i></span>
-                        <input type="text" name="search" id="searchInput" class="form-control bg-transparent border-0 fs-6 shadow-none" placeholder="{{ __('Cari kata kunci berita...') }}" value="{{ $search }}">
+                        <input type="text" name="search" id="searchInput" class="form-control bg-transparent border-0 fs-6 shadow-none" placeholder="{{ __('Search news keywords...') }}" value="{{ $search }}">
                     </div>
                 </div>
                 <!-- Category -->
                 <div class="col-12 col-md-3 col-lg-3">
                     <select name="category" id="categorySelect" class="form-select form-select-lg bg-white border fs-6 shadow-none text-muted" style="border-radius: 12px; border-color: #E5E7EB !important;">
-                        <option value="All Categories" {{ $category == 'All Categories' ? 'selected' : '' }}>{{ __('Semua Kategori') }}</option>
+                        <option value="All Categories" {{ $category == 'All Categories' ? 'selected' : '' }}>{{ __('All Categories') }}</option>
                         <option value="Logistics" {{ $category == 'Logistics' ? 'selected' : '' }}>{{ __('Logistics') }}</option>
                         <option value="Trade" {{ $category == 'Trade' ? 'selected' : '' }}>{{ __('Trade') }}</option>
                         <option value="Shipping" {{ $category == 'Shipping' ? 'selected' : '' }}>{{ __('Shipping') }}</option>
@@ -63,7 +63,7 @@
                 <!-- Country -->
                 <div class="col-12 col-md-3 col-lg-2">
                     <select name="country" id="countrySelect" class="form-select form-select-lg bg-white border fs-6 shadow-none text-muted" style="border-radius: 12px; border-color: #E5E7EB !important;">
-                        <option value="All Countries" {{ $countryId == 'All Countries' ? 'selected' : '' }}>{{ __('Semua Negara') }}</option>
+                        <option value="All Countries" {{ $countryId == 'All Countries' ? 'selected' : '' }}>{{ __('All Countries') }}</option>
                         @foreach($countries as $c)
                             <option value="{{ $c->id }}" {{ $countryId == $c->id ? 'selected' : '' }}>{{ $c->name }}</option>
                         @endforeach
@@ -89,7 +89,7 @@
                     <i class="bi bi-rss text-primary"></i> {{ __('News Feed') }}
                 </h5>
                 <span class="text-muted small fw-medium" id="loadingIndicator" style="display: none;">
-                    <i class="bi bi-arrow-repeat bi-spin me-1"></i> {{ __('Memuat Berita...') }}
+                    <i class="bi bi-arrow-repeat bi-spin me-1"></i> {{ __('Loading News...') }}
                 </span>
             </div>
             
@@ -102,7 +102,7 @@
         <div class="col-xl-3 col-lg-4">
             <div class="sticky-top" style="top: 24px;">
                 <h5 class="fw-bold text-dark mb-4 d-flex align-items-center gap-2">
-                    <i class="bi bi-bar-chart-steps text-primary"></i> {{ __('Ringkasan Data') }}
+                    <i class="bi bi-bar-chart-steps text-primary"></i> {{ __('Data Summary') }}
                 </h5>
 
                 <!-- AI Insight Card -->
@@ -139,7 +139,7 @@
                     <div class="card-body p-4">
                         <div class="d-flex align-items-center gap-2 mb-4">
                             <i class="bi bi-pie-chart text-muted"></i>
-                            <h6 class="fw-bold text-dark mb-0">{{ __('Distribusi Kategori') }}</h6>
+                            <h6 class="fw-bold text-dark mb-0">{{ __('Category Distribution') }}</h6>
                         </div>
                         
                         <!-- Hidden chart just to keep updateCharts working without errors -->

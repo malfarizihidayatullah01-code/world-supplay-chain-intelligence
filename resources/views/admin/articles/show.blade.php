@@ -6,7 +6,7 @@
         <div class="col-lg-8">
             <div class="d-flex align-items-center justify-content-between mb-4">
                 <a href="{{ route('admin.articles.index') }}" class="btn btn-outline-secondary" style="border-radius: 8px;">
-                    <i class="bi bi-arrow-left me-1"></i> Kembali ke Daftar
+                    <i class="bi bi-arrow-left me-1"></i> Back to List
                 </a>
                 <div class="d-flex gap-2">
                     <a href="{{ route('admin.articles.edit', $article->id) }}" class="btn btn-primary" style="border-radius: 8px;">

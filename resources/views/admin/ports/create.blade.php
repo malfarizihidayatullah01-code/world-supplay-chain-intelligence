@@ -48,7 +48,7 @@
     <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h4 class="mb-1 fw-bold text-dark">{{ __('Tambah Pelabuhan Baru') }}</h4>
+            <h4 class="mb-1 fw-bold text-dark">{{ __('Add New Port') }}</h4>
             <p class="text-muted mb-0" style="font-size: 0.9rem;">Register a new port to the global dataset</p>
         </div>
         <a href="{{ route('admin.ports.index') }}" class="btn btn-light border" style="border-radius: 8px; font-size: 0.85rem;">
@@ -123,7 +123,7 @@
             </div>
 
             <div class="d-flex justify-content-end gap-2">
-                <a href="{{ route('admin.ports.index') }}" class="btn btn-light border px-4" style="border-radius: 8px;">{{ __('Batal') }}</a>
+                <a href="{{ route('admin.ports.index') }}" class="btn btn-light border px-4" style="border-radius: 8px;">{{ __('Cancel') }}</a>
                 <button type="submit" class="btn btn-navy px-4" style="border-radius: 8px;">
                     <i data-lucide="save" style="width: 16px; margin-right: 4px;"></i> Save Port
                 </button>

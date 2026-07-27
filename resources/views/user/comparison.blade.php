@@ -4,7 +4,7 @@
 <div class="container-fluid py-4" style="font-family: 'Inter', sans-serif;">
     <!-- Header -->
     <div class="mb-4">
-        <h3 class="fw-bold mb-1 text-dark" style="letter-spacing: -0.5px;">{{ __('Mesin Perbandingan Negara') }}</h3>
+        <h3 class="fw-bold mb-1 text-dark" style="letter-spacing: -0.5px;">{{ __('Country Comparison Engine') }}</h3>
     </div>
 
     <!-- Selectors -->
@@ -13,7 +13,7 @@
             <form id="compareForm" class="row g-3 align-items-center m-0">
                 <!-- Country A -->
                 <div class="col-md-5">
-                    <label class="form-label text-muted small fw-bold mb-2">{{ __('Negara A') }}</label>
+                    <label class="form-label text-muted small fw-bold mb-2">{{ __('Country A') }}</label>
                     <select name="country_a" id="country_a" class="form-select border-0 bg-light rounded-3 shadow-none" required>
                         <option value="">{{ __('Select Country...') }}</option>
                         @foreach($countries as $c)
@@ -32,7 +32,7 @@
 
                 <!-- Country B -->
                 <div class="col-md-5">
-                    <label class="form-label text-muted small fw-bold mb-2">{{ __('Negara B') }}</label>
+                    <label class="form-label text-muted small fw-bold mb-2">{{ __('Country B') }}</label>
                     <div class="d-flex gap-2">
                         <select name="country_b" id="country_b" class="form-select border-0 bg-light rounded-3 shadow-none flex-grow-1" required>
                             <option value="">{{ __('Select Country...') }}</option>
@@ -363,12 +363,12 @@
         const btn = document.getElementById('compareBtn');
         
         if(!ca || !cb) {
-            alert('Silakan pilih kedua negara terlebih dahulu.');
+            alert('Please select both countries first.');
             return;
         }
 
         if(ca === cb) {
-            alert('Harap pilih dua negara yang berbeda.');
+            alert('Please select two different countries.');
             return;
         }
         
