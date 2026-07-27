@@ -12,9 +12,8 @@ class NewsApiService
     public function syncNews()
     {
         try {
-            $apiKey = env('GNEWS_API_KEY', 'demo'); 
-            $query = 'logistics OR shipping OR trade OR economy';
-            
+            $apiKey = env('GNEWS_API_KEY', 'demo');
+            $query = 'logistics OR shipping OR "international trade" OR "global economy"';            
             $response = Http::timeout(15)->retry(2, 100)->get('https://gnews.io/api/v4/search', [
                 'q' => $query,
                 'lang' => 'en',
@@ -81,7 +80,7 @@ class NewsApiService
         try {
             $apiKey = env('GNEWS_API_KEY', 'demo'); 
             // Broaden search: any of these keywords + country name
-            $query = '("logistics" OR "supply chain" OR "economy" OR "trade") AND "' . $country->name . '"';
+            $query = '("logistics" OR "supply chain" OR "global economy" OR "international trade") AND "' . $country->name . '"';
             
             $response = Http::timeout(15)->retry(2, 100)->get('https://gnews.io/api/v4/search', [
                 'q' => $query,
